@@ -1,3 +1,8 @@
+// ------------------------------------------------
+// * Application: Vegan recipes app
+// * Author: chanduthedev@gmail.com
+// ------------------------------------------------
+
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -46,7 +51,7 @@ app.use(async (req, res, next) => {
   }
 });
 
-app.use("/", routes);
+routes(app);
 
 app.listen(PORT, () => {
   console.log("Server is listening on Port:", PORT);

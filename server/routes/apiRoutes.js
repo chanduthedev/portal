@@ -9,9 +9,10 @@ function apiRoutes(app) {
   // user API's
   app
     .route("/user/register")
-    .post(require("../services/user/registerUser").process);
+    .post(require("../services/user/userRegister").process);
 
   app.route("/user/login").post(require("../services/user/userLogin").process);
+  app.route("/user/:id").delete(require("../services/user/userDelete").process);
 
   // Recipe API's
   app

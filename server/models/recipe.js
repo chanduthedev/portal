@@ -7,8 +7,8 @@ const mongoose = require("mongoose");
 const recipeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   image: { type: String, required: true },
-  ingradients: { type: array, default: [], required: true },
-  instructions: { type: array, default: [], required: true },
+  ingradients: { type: Array, default: [], required: true },
+  instructions: { type: Array, default: [], required: true },
   created_timestamp: { type: Date },
   updated_timestamp: { type: Date },
 });
