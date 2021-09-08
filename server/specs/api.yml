@@ -1,0 +1,571 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Vegan Recipe RES API's
+  description: Vegan Recipe app REST API
+  contact:
+    name: Chandra Pasumarthi
+    email: chanduthedev@gmail.com
+    url: www.chanduthedev.com
+servers:
+  - url: http://localhost:7788
+tags:
+  - name: userAPI
+  - name: recipeAPI
+
+paths:
+  /user/register:
+    post:
+      description: "For creating new user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                  description: password of the user
+                email:
+                  type: string
+                  description: email of the user
+                password:
+                  type: string
+                  description: password of the user
+
+      responses:
+        201:
+          description: New user added
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          userName:
+                            type: string
+                            description: password of the user
+                          email:
+                            type: string
+                            description: email of the user
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        403:
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        404:
+          description: Recipe not found
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+      tags:
+        - userAPI
+
+  /user/login:
+    post:
+      description: "Login for the existing user"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                password:
+                  type: string
+
+      responses:
+        200:
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          userName:
+                            type: string
+                            description: password of the user
+                          email:
+                            type: string
+                            description: email of the user
+                          x-access-token:
+                            type: string
+                            format: JWT token
+        400:
+          description: Bad request error
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        404:
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+      tags:
+        - userAPI
+
+  /recipe/create:
+    post:
+      description: "For creating new recipe"
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+            format: JWT token
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/recipeDetails"
+      responses:
+        201:
+          description: New Recipe Created
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/recipeDetails"
+        400:
+          description: Bad request error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        403:
+          description: Recipe already exists
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        500:
+          description: Internal server error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+      tags:
+        - recipeAPI
+
+  /recipe/{title}:
+    get:
+      parameters:
+        - in: path
+          name: title
+          required: true
+          schema:
+            type: string
+            example: Chicken
+
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+            format: JWT token
+          required: true
+      responses:
+        200:
+          description: "success response"
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+                  - type: object
+                    required:
+                      - data
+                    properties:
+                      data:
+                        $ref: "#/components/schemas/recipeDetails"
+        400:
+          description: Bad request error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        403:
+          description: Recipe already exists
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        404:
+          description: Recipe not found
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        500:
+          description: Internal server error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+      tags:
+        - recipeAPI
+    delete:
+      parameters:
+        - in: path
+          name: title
+          required: true
+          schema:
+            type: string
+            example: AP072233
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+            format: JWT token
+          required: true
+      responses:
+        204:
+          description: "resource deleted successfully"
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        400:
+          description: Bad request error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        403:
+          description: Recipe already exists
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        404:
+          description: Recipe not found
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+        500:
+          description: Internal server error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+      tags:
+        - recipeAPI
+
+  /recipe/update:
+    patch:
+      parameters:
+        - in: header
+          name: x-access-token
+          schema:
+            type: string
+            format: JWT token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              allOf:
+                - $ref: "#/components/schemas/recipeDetails"
+      responses:
+        200:
+          description: "resource updated successfully"
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        400:
+          description: Bad request error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        403:
+          description: Recipe already exists
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+        404:
+          description: Recipe not found
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+
+        500:
+          description: Internal server error
+          headers:
+            x-access-token:
+              schema:
+                type: string
+                format: JWT token
+              description: API session ID
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: "#/components/schemas/basicResponse"
+      tags:
+        - recipeAPI
+
+components:
+  schemas:
+    basicResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+
+    recipeDetails:
+      type: object
+      required:
+        - title
+        - image
+        - ingredients
+        - instructions
+      properties:
+        title:
+          type: string
+          example: chanduthedev
+        image:
+          type: string
+          example: base64 string
+        ingredients:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/ingredient"
+        instructions:
+          type: array
+          items:
+            allOf:
+              - $ref: "#/components/schemas/ingredientInstruction"
+    ingredient:
+      type: object
+      required:
+        - name
+        - amount
+      properties:
+        name:
+          type: string
+        amount:
+          type: number
+
+    ingredientInstruction:
+      type: object
+      required:
+        - stepNo
+        - stepDesc
+      properties:
+        stepNo:
+          type: number
+        stepDesc:
+          type: string
