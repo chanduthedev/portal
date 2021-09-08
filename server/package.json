@@ -9,7 +9,7 @@
   "scripts": {
     "devStart": "nodemon server.js",
     "start": "server.js",
-    "test": "test"
+    "test": "mocha 'tests/completeTest.js'"
   },
   "repository": {
     "type": "git",
@@ -20,11 +20,14 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
+    "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.5"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.1.1",
     "nodemon": "^2.0.12"
   }
 }
