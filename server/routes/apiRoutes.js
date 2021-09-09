@@ -3,7 +3,8 @@
 // * Author: chanduthedev@gmail.com
 // ------------------------------------------------
 
-"use strict";
+const validations = require("./../utils/validations");
+("use strict");
 
 function apiRoutes(app) {
   // user API's
@@ -14,19 +15,36 @@ function apiRoutes(app) {
   app
     .route("/user/login")
     .post(require("../services/user/userLogin").processRequest);
+
   app.route("/user/:id").delete(require("../services/user/userDelete").process);
 
   // Recipe API's
   app
     .route("/recipe/create")
-    .post(require("../services/recipe/createRecipe").process);
+    .post(
+      validations.validateToken,
+      validations.allowIfLoggedin,
+      require("../services/recipe/createRecipe").process
+    );
 
   app
     .route("/recipe/:title")
-    .get(require("../services/recipe/viewRecipe").process)
-    .delete(require("../services/recipe/deleteRecipe").process);
+    .get(
+      validations.validateToken,
+      validations.allowIfLoggedin,
+      require("../services/recipe/viewRecipe").process
+    )
+    .delete(
+      validations.validateToken,
+      validations.allowIfLoggedin,
+      require("../services/recipe/deleteRecipe").process
+    );
   app
     .route("/recipe/update")
-    .patch(require("../services/recipe/updateRecipe").process);
+    .patch(
+      validations.validateToken,
+      validations.allowIfLoggedin,
+      require("../services/recipe/updateRecipe").process
+    );
 }
 module.exports = apiRoutes;

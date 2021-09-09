@@ -6,6 +6,13 @@
 const validator = require("email-validator");
 const bcrypt = require("bcrypt");
 const commonErrorCodes = require("../responses/commonErrorCodes");
+const User = require("../models/user");
+const path = require("path");
+const jwt = require("jsonwebtoken");
+
+require("dotenv").config({
+  path: path.join(__dirname, ".env"),
+});
 
 async function hashPassword(password) {
   return await bcrypt.hash(password, 10);
@@ -393,3 +400,64 @@ function validateLoginUserRequestBody(requestBody) {
   }
 }
 exports.validateLoginUserRequestBody = validateLoginUserRequestBody;
+
+async function allowIfLoggedin(req, res, next) {
+  try {
+    const userDetails = res.locals.loggedInUser;
+    console.log("allowIfLoggedin userDetails:%s", userDetails);
+    if (!userDetails)
+      return res.status(401).json({
+        message: commonErrorCodes.USER_NEEDS_LOGIN.message,
+        code: commonErrorCodes.USER_NEEDS_LOGIN.code,
+      });
+    req.userDetails = userDetails;
+    next();
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}
+exports.allowIfLoggedin = allowIfLoggedin;
+
+async function validateToken(req, res, next) {
+  try {
+    if (req.headers["x-access-token"]) {
+      try {
+        const accessToken = req.headers["x-access-token"];
+        const { userName, exp } = await jwt.verify(
+          accessToken,
+          process.env.JWT_SECRET
+        );
+        // If token has expired
+        if (exp < Date.now().valueOf() / 1000) {
+          return res.status(401).json({
+            error: commonErrorCodes.TOKEN_EXPIRED.message,
+            code: commonErrorCodes.TOKEN_EXPIRED.code,
+          });
+        }
+
+        const userDetails = await User.findOne({
+          user_name: userName,
+        });
+        res.locals.loggedInUser = {
+          userName: userDetails.user_name,
+          email: userDetails.email,
+        };
+        next();
+      } catch (error) {
+        console.log(error);
+        return res.status(400).json({
+          message: commonErrorCodes.TOKEN_VERIFY_EXCEPTION.message,
+          code: commonErrorCodes.TOKEN_VERIFY_EXCEPTION.code,
+        });
+        // next(error);
+      }
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.validateToken = validateToken;

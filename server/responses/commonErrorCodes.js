@@ -95,4 +95,24 @@ module.exports = {
     code: 40014,
     message: "Password length should be betwen 6 and 32 letters.",
   },
+  TOKEN_EXPIRED: {
+    status: 400,
+    code: 40015,
+    message: "Access token expired",
+  },
+  TOKEN_MISMATCH: {
+    status: 400,
+    code: 40016,
+    message: "Access token mismatch",
+  },
+  TOKEN_VERIFY_EXCEPTION: {
+    status: 400,
+    code: 40017,
+    message: "Exception while verifying access token",
+  },
+  USER_NEEDS_LOGIN: {
+    status: 400,
+    code: 40018,
+    message: "User needs to login.",
+  },
 };

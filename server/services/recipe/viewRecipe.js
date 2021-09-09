@@ -11,7 +11,6 @@ const commonErrCodes = require("../../responses/commonErrorCodes");
 const validations = require("../../utils/validations");
 
 async function process(req, res) {
-  console.log("title:%s", req.params.title);
   try {
     const inputTitle = req.params.title;
     const result = validations.validateTitle(inputTitle);
@@ -21,6 +20,7 @@ async function process(req, res) {
         message: result["message"],
       });
     }
+
     let recipeDetails = await Recipe.findOne({ title: req.params.title });
 
     if (recipeDetails) {

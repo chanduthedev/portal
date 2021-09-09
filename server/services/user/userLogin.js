@@ -31,12 +31,10 @@ async function processRequest(req, res) {
     userDetails = await Users.findOne({ user_name: req.body.userName });
 
     if (userDetails) {
-      console.log("userDetails: %s", userDetails);
       const validPassword = await validations.validatePassword(
         req.body.password,
         userDetails.password
       );
-      console.log("validPassword: %s", validPassword);
 
       if (!validPassword) {
         return res.status(400).json({
@@ -46,7 +44,7 @@ async function processRequest(req, res) {
       }
 
       const accessToken = jwt.sign(
-        { userId: req.body.userName },
+        { userName: req.body.userName },
         process.env.JWT_SECRET,
         {
           expiresIn: "1d",

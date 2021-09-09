@@ -31,7 +31,7 @@ app.use(async (req, res, next) => {
   if (req.headers["x-access-token"]) {
     try {
       const accessToken = req.headers["x-access-token"];
-      const { userId, exp } = await jwt.verify(
+      const { userName, exp } = await jwt.verify(
         accessToken,
         process.env.JWT_SECRET
       );
@@ -41,7 +41,13 @@ app.use(async (req, res, next) => {
           error: "JWT token has expired, please login to obtain a new one",
         });
       }
-      res.locals.loggedInUser = await User.findById(userId);
+      const userDetails = await User.findOne({
+        user_name: userName,
+      });
+      res.locals.loggedInUser = {
+        userName: userDetails.user_name,
+        email: userDetails.email,
+      };
       next();
     } catch (error) {
       next(error);
