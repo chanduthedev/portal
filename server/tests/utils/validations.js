@@ -4,6 +4,25 @@ const validations = require("../../utils/validations");
 const commonErrorCodes = require("../../responses/commonErrorCodes");
 
 describe("Utils test cases", function () {
+  describe("validate password encrypt and decrypt ", function () {
+    it("should return success when passed input and ecrypted are same", async function () {
+      const encryptPassword = await validations.hashPassword("username");
+      const result = await validations.validatePassword(
+        "username",
+        encryptPassword
+      );
+      expect(result).to.equal(true);
+    });
+    it("should return error when passed input and ecrypted are different", async function () {
+      const encryptPassword = await validations.hashPassword("username");
+      const result = await validations.validatePassword(
+        "username1",
+        encryptPassword
+      );
+      expect(result).to.equal(false);
+    });
+  });
+
   describe("validate username", function () {
     it("should return success when passed username", function () {
       const result = validations.validateUserName("username");
@@ -103,7 +122,7 @@ describe("Utils test cases", function () {
 
   describe("validate password format", function () {
     it("should return success when passed valid password", function () {
-      const result = validations.validatePassword("password");
+      const result = validations.validatePasswordFormat("password");
       expect(result).to.be.an("object");
       expect(result).to.have.property("status");
       expect(result).to.have.property("code");
@@ -113,7 +132,7 @@ describe("Utils test cases", function () {
       expect(result.message).to.equal(commonErrorCodes.SUCCESS.message);
     });
     it("should return missing password", function () {
-      const result = validations.validatePassword();
+      const result = validations.validatePasswordFormat();
       expect(result).to.be.an("object");
       expect(result).to.have.property("status");
       expect(result).to.have.property("code");
@@ -125,7 +144,7 @@ describe("Utils test cases", function () {
       );
     });
     it("should return lenght error when password lenght is < 6", function () {
-      const result = validations.validatePassword("1234");
+      const result = validations.validatePasswordFormat("1234");
       expect(result).to.be.an("object");
       expect(result).to.have.property("status");
       expect(result).to.have.property("code");
@@ -141,7 +160,7 @@ describe("Utils test cases", function () {
       );
     });
     it("should return lenght error when password lenght is > 32", function () {
-      const result = validations.validatePassword(
+      const result = validations.validatePasswordFormat(
         "1234123412341234123412341234123412341234"
       );
       expect(result).to.be.an("object");
@@ -159,7 +178,7 @@ describe("Utils test cases", function () {
       );
     });
     it("should return invalid password format when passed JSON", function () {
-      const result = validations.validatePassword({ test: "test" });
+      const result = validations.validatePasswordFormat({ test: "test" });
       expect(result).to.be.an("object");
       expect(result).to.have.property("status");
       expect(result).to.have.property("code");
@@ -175,7 +194,7 @@ describe("Utils test cases", function () {
       );
     });
     it("should return invalid password format when passed array", function () {
-      const result = validations.validatePassword([1, 2]);
+      const result = validations.validatePasswordFormat([1, 2]);
       expect(result).to.be.an("object");
       expect(result).to.have.property("status");
       expect(result).to.have.property("code");

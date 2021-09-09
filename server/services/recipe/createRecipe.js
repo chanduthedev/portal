@@ -20,6 +20,8 @@ async function process(req, res) {
 
   // Making model object to insert
   const recipe = new Recipe({
+    user_name: req.body.userName,
+    email: req.body.email,
     title: req.body.title,
     image: req.body.image,
     ingradients: req.body.ingradients,
@@ -37,9 +39,14 @@ async function process(req, res) {
     }
     // No recipe with given title, can create now
     const newRecipe = await recipe.save();
+    let respData = {};
+    respData["title"] = newRecipe.title;
+    respData["image"] = newRecipe.image;
+    respData["ingradients"] = newRecipe.ingradients;
+    respData["instructions"] = newRecipe.instructions;
     if (newRecipe) {
       return res.status(201).json({
-        data: newRecipe,
+        data: respData,
         code: commResp.RECIPE_ADDED.code,
         message: commResp.RECIPE_ADDED.message,
       });
@@ -50,6 +57,7 @@ async function process(req, res) {
       });
     }
   } catch (err) {
+    console.log("err:%s", err);
     return res.status(400).json({
       code: commResp.RECIPE_CREATION_EXCEPTION.code,
       message: commResp.RECIPE_CREATION_EXCEPTION.message,

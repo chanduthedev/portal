@@ -11,7 +11,9 @@ function apiRoutes(app) {
     .route("/user/register")
     .post(require("../services/user/userRegister").process);
 
-  app.route("/user/login").post(require("../services/user/userLogin").process);
+  app
+    .route("/user/login")
+    .post(require("../services/user/userLogin").processRequest);
   app.route("/user/:id").delete(require("../services/user/userDelete").process);
 
   // Recipe API's

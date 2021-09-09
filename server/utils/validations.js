@@ -4,7 +4,18 @@
 // ------------------------------------------------
 
 const validator = require("email-validator");
+const bcrypt = require("bcrypt");
 const commonErrorCodes = require("../responses/commonErrorCodes");
+
+async function hashPassword(password) {
+  return await bcrypt.hash(password, 10);
+}
+exports.hashPassword = hashPassword;
+
+async function validatePassword(plainPassword, hashedPassword) {
+  return await bcrypt.compare(plainPassword, hashedPassword);
+}
+exports.validatePassword = validatePassword;
 
 function validateUserName(userName) {
   if (typeof userName === "undefined") {
@@ -74,7 +85,7 @@ function validateEmail(email) {
 }
 exports.validateEmail = validateEmail;
 
-function validatePassword(password) {
+function validatePasswordFormat(password) {
   if (typeof password === "undefined") {
     return {
       status: commonErrorCodes.MISSING_PASSWORD.status,
@@ -107,7 +118,7 @@ function validatePassword(password) {
 
   return commonErrorCodes.SUCCESS;
 }
-exports.validatePassword = validatePassword;
+exports.validatePasswordFormat = validatePasswordFormat;
 
 function validateTitle(title) {
   if (typeof title === "undefined") {
@@ -284,14 +295,19 @@ function validateCreateRecipeRequestBody(requestBody) {
         message: commonErrorCodes.BAD_REQUEST.message,
       };
     }
+    const checkUserName = validateUserName(requestBody.userName);
+    if (checkUserName["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkUserName;
+    }
+
     const checkTitle = validateTitle(requestBody.title);
     if (checkTitle["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkTitle;
     }
-    const checkImage = validateImage(requestBody.image);
-    if (checkImage["status"] !== commonErrorCodes.SUCCESS.status) {
-      return checkImage;
-    }
+    // const checkImage = validateImage(requestBody.image);
+    // if (checkImage["status"] !== commonErrorCodes.SUCCESS.status) {
+    //   return checkImage;
+    // }
 
     const checkIngradients = validateIngredients(requestBody.ingradients);
     if (checkIngradients["status"] !== commonErrorCodes.SUCCESS.status) {
@@ -326,6 +342,11 @@ function validateCreateUserRequestBody(requestBody) {
     if (checkUserName["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkUserName;
     }
+    const checkPasswordFormat = validatePasswordFormat(requestBody.password);
+    if (checkPasswordFormat["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkPasswordFormat;
+    }
+
     const checkEmail = validateEmail(requestBody.email);
     if (checkEmail["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkEmail;
@@ -356,7 +377,7 @@ function validateLoginUserRequestBody(requestBody) {
     if (checkUserName["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkUserName;
     }
-    const checkPasswordFormat = validatePassword(requestBody.password);
+    const checkPasswordFormat = validatePasswordFormat(requestBody.password);
     if (checkPasswordFormat["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkPasswordFormat;
     }

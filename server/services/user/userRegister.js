@@ -5,14 +5,16 @@
 
 const User = require("../../models/user");
 const commResp = require("../../responses/commonRespCodes");
+const commErrorCodes = require("../../responses/commonErrorCodes");
 const validations = require("../../utils/validations");
+const path = require("path");
 
 ("use strict");
 
 async function process(req, res) {
   console.log("username:", req.body.userName);
 
-  const result = validations.validateCreateRecipeRequestBody(req.body);
+  const result = validations.validateCreateUserRequestBody(req.body);
   if (result["status"] !== commErrorCodes.SUCCESS.status) {
     return res.status(result["status"]).json({
       code: result["code"],
@@ -20,9 +22,11 @@ async function process(req, res) {
     });
   }
 
+  const hashedPassword = await validations.hashPassword(req.body.password);
+
   const user = new User({
     user_name: req.body.userName,
-    password: req.body.password,
+    password: hashedPassword,
     email: req.body.email,
     created_timestamp: new Date().toISOString().replace(/T/, " "),
   });
@@ -34,10 +38,16 @@ async function process(req, res) {
         message: commResp.USER_ALREADY_EXISTS.message,
       });
     }
+
     const newUser = await user.save();
+
+    let restData = {};
+    restData["userName"] = newUser.user_name;
+    restData["email"] = newUser.email;
+
     if (newUser) {
       return res.status(201).json({
-        data: newUser,
+        data: restData,
         code: commResp.USER_CREATED.code,
         message: commResp.USER_CREATED.message,
       });
