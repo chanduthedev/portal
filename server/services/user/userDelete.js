@@ -10,7 +10,15 @@ const commonResponseCodes = require("../../responses/commonRespCodes");
 
 async function process(req, res) {
   try {
-    const user = await Users.findOneAndDelete({ user_name: req.params.id });
+    const userId = req.params.id;
+    const result = validations.validateUserName(userId);
+    if (result["status"] !== commonErrCodes.SUCCESS.status) {
+      return res.status(result["status"]).json({
+        code: result["code"],
+        message: result["message"],
+      });
+    }
+    const user = await Users.findOneAndDelete({ user_name: userId });
     if (user) {
       return res.status(200).json({
         code: commonResponseCodes.USER_DELETED.code,

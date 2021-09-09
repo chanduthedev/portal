@@ -11,6 +11,14 @@ const commonResponseCodes = require("../../responses/commonRespCodes");
 async function process(req, res) {
   console.log("title:%s", req.params.title);
   try {
+    const inputTitle = req.params.title;
+    const result = validations.validateTitle(inputTitle);
+    if (result["status"] !== commonErrCodes.SUCCESS.status) {
+      return res.status(result["status"]).json({
+        code: result["code"],
+        message: result["message"],
+      });
+    }
     let recipeDetails = await Recipe.findOne({ title: req.params.title });
 
     if (recipeDetails) {

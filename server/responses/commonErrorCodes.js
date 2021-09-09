@@ -10,6 +10,11 @@ module.exports = {
     code: 200,
     message: "Success.",
   },
+  BAD_REQUEST: {
+    status: 400,
+    code: 40000,
+    message: "Bad request, request can't be empty",
+  },
   MISSING_USERNAME: {
     status: 400,
     code: 40001,
@@ -69,5 +74,25 @@ module.exports = {
     status: 400,
     code: 40010,
     message: "Recipe image is invalid.",
+  },
+  MISSING_PASSWORD: {
+    status: 400,
+    code: 40011,
+    message: "Password is required.",
+  },
+  INVALID_PASSWORD_FORMAT: {
+    status: 400,
+    code: 40012,
+    message: "Password formtat is invalid.",
+  },
+  INVALID_USERNAME_LENGTH: {
+    status: 400,
+    code: 40013,
+    message: "Username length should be betwen 6 and 32 letters.",
+  },
+  INVALID_PASSWORD_LENGTH: {
+    status: 400,
+    code: 40014,
+    message: "Password length should be betwen 6 and 32 letters.",
   },
 };

@@ -7,11 +7,20 @@
 
 const Users = require("../../models/user");
 const commonResponseCodes = require("../../responses/commonRespCodes");
+const commErrorCodes = require("../../responses/commonErrorCodes");
 
 async function process(req, res) {
   var userDetails = null;
 
   try {
+    const result = validations.validateLoginUserRequestBody(req.body);
+    if (result["status"] !== commErrorCodes.SUCCESS.status) {
+      return res.status(result["status"]).json({
+        code: result["code"],
+        message: result["message"],
+      });
+    }
+
     userDetails = await Users.findOne({ user_name: req.body.userName });
 
     if (userDetails) {

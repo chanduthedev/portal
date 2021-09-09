@@ -6,7 +6,7 @@
 const validator = require("email-validator");
 const commonErrorCodes = require("../responses/commonErrorCodes");
 
-async function validateUserName(userName) {
+function validateUserName(userName) {
   if (typeof userName === "undefined") {
     return {
       status: commonErrorCodes.MISSING_USERNAME.status,
@@ -28,12 +28,19 @@ async function validateUserName(userName) {
       message: commonErrorCodes.INVALID_USERNAME.message,
     };
   }
+  if (userName && (userName.length < 6 || userName.length > 32)) {
+    return {
+      status: commonErrorCodes.INVALID_USERNAME_LENGTH.status,
+      code: commonErrorCodes.INVALID_USERNAME_LENGTH.code,
+      message: commonErrorCodes.INVALID_USERNAME_LENGTH.message,
+    };
+  }
 
   return commonErrorCodes.SUCCESS;
 }
 exports.validateUserName = validateUserName;
 
-async function validateEmail(email) {
+function validateEmail(email) {
   if (typeof email === "undefined") {
     return {
       status: commonErrorCodes.MISSING_EMAIL.status,
@@ -67,7 +74,42 @@ async function validateEmail(email) {
 }
 exports.validateEmail = validateEmail;
 
-async function validateTitle(title) {
+function validatePassword(password) {
+  if (typeof password === "undefined") {
+    return {
+      status: commonErrorCodes.MISSING_PASSWORD.status,
+      code: commonErrorCodes.MISSING_PASSWORD.code,
+      message: commonErrorCodes.MISSING_PASSWORD.message,
+    };
+  }
+  if (!password) {
+    return {
+      status: commonErrorCodes.INVALID_PASSWORD_FORMAT.status,
+      code: commonErrorCodes.INVALID_PASSWORD_FORMAT.code,
+      message: commonErrorCodes.INVALID_PASSWORD_FORMAT.message,
+    };
+  }
+  if (password && (password.length === 0 || typeof password !== "string")) {
+    return {
+      status: commonErrorCodes.INVALID_PASSWORD_FORMAT.status,
+      code: commonErrorCodes.INVALID_PASSWORD_FORMAT.code,
+      message: commonErrorCodes.INVALID_PASSWORD_FORMAT.message,
+    };
+  }
+
+  if (password && (password.length < 6 || password.length > 32)) {
+    return {
+      status: commonErrorCodes.INVALID_PASSWORD_LENGTH.status,
+      code: commonErrorCodes.INVALID_PASSWORD_LENGTH.code,
+      message: commonErrorCodes.INVALID_PASSWORD_LENGTH.message,
+    };
+  }
+
+  return commonErrorCodes.SUCCESS;
+}
+exports.validatePassword = validatePassword;
+
+function validateTitle(title) {
   if (typeof title === "undefined") {
     return {
       status: commonErrorCodes.MISSING_TITLE.status,
@@ -89,12 +131,11 @@ async function validateTitle(title) {
       message: commonErrorCodes.INVALID_TITLE.message,
     };
   }
-
   return commonErrorCodes.SUCCESS;
 }
 exports.validateTitle = validateTitle;
 
-async function validateImage(imageData) {
+function validateImage(imageData) {
   if (typeof imageData === "undefined") {
     return {
       status: commonErrorCodes.MISSING_IMAGE.status,
@@ -129,7 +170,7 @@ async function validateImage(imageData) {
 }
 exports.validateImage = validateImage;
 
-async function validateIngredients(ingradients) {
+function validateIngredients(ingradients) {
   if (typeof ingradients === "undefined") {
     return {
       status: commonErrorCodes.MISSING_INGREDIENTS.status,
@@ -182,7 +223,7 @@ async function validateIngredients(ingradients) {
 }
 exports.validateIngredients = validateIngredients;
 
-async function validateInstructions(instructions) {
+function validateInstructions(instructions) {
   if (typeof instructions === "undefined") {
     return {
       status: commonErrorCodes.MISSING_INSTRUCTIONS.status,
@@ -233,3 +274,101 @@ async function validateInstructions(instructions) {
   return commonErrorCodes.SUCCESS;
 }
 exports.validateInstructions = validateInstructions;
+
+function validateCreateRecipeRequestBody(requestBody) {
+  try {
+    if (Object.keys(requestBody).length === 0) {
+      return {
+        status: commonErrorCodes.BAD_REQUEST.status,
+        code: commonErrorCodes.BAD_REQUEST.code,
+        message: commonErrorCodes.BAD_REQUEST.message,
+      };
+    }
+    const checkTitle = validateTitle(requestBody.title);
+    if (checkTitle["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkTitle;
+    }
+    const checkImage = validateImage(requestBody.image);
+    if (checkImage["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkImage;
+    }
+
+    const checkIngradients = validateIngredients(requestBody.ingradients);
+    if (checkIngradients["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkIngradients;
+    }
+    const checkInstructions = validateInstructions(requestBody.instructions);
+    if (checkInstructions["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkInstructions;
+    }
+    return commonErrorCodes.SUCCESS;
+  } catch (e) {
+    console.log(e);
+    return {
+      status: commonErrorCodes.BAD_REQUEST.status,
+      code: commonErrorCodes.BAD_REQUEST.code,
+      message: commonErrorCodes.BAD_REQUEST.message,
+    };
+  }
+}
+exports.validateCreateRecipeRequestBody = validateCreateRecipeRequestBody;
+
+function validateCreateUserRequestBody(requestBody) {
+  try {
+    if (Object.keys(requestBody).length === 0) {
+      return {
+        status: commonErrorCodes.BAD_REQUEST.status,
+        code: commonErrorCodes.BAD_REQUEST.code,
+        message: commonErrorCodes.BAD_REQUEST.message,
+      };
+    }
+    const checkUserName = validateUserName(requestBody.userName);
+    if (checkUserName["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkUserName;
+    }
+    const checkEmail = validateEmail(requestBody.email);
+    if (checkEmail["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkEmail;
+    }
+
+    return commonErrorCodes.SUCCESS;
+  } catch (e) {
+    console.log(e);
+    return {
+      status: commonErrorCodes.BAD_REQUEST.status,
+      code: commonErrorCodes.BAD_REQUEST.code,
+      message: commonErrorCodes.BAD_REQUEST.message,
+    };
+  }
+}
+exports.validateCreateUserRequestBody = validateCreateUserRequestBody;
+
+function validateLoginUserRequestBody(requestBody) {
+  try {
+    if (Object.keys(requestBody).length === 0) {
+      return {
+        status: commonErrorCodes.BAD_REQUEST.status,
+        code: commonErrorCodes.BAD_REQUEST.code,
+        message: commonErrorCodes.BAD_REQUEST.message,
+      };
+    }
+    const checkUserName = validateUserName(requestBody.userName);
+    if (checkUserName["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkUserName;
+    }
+    const checkPasswordFormat = validatePassword(requestBody.password);
+    if (checkPasswordFormat["status"] !== commonErrorCodes.SUCCESS.status) {
+      return checkPasswordFormat;
+    }
+
+    return commonErrorCodes.SUCCESS;
+  } catch (e) {
+    console.log(e);
+    return {
+      status: commonErrorCodes.BAD_REQUEST.status,
+      code: commonErrorCodes.BAD_REQUEST.code,
+      message: commonErrorCodes.BAD_REQUEST.message,
+    };
+  }
+}
+exports.validateLoginUserRequestBody = validateLoginUserRequestBody;

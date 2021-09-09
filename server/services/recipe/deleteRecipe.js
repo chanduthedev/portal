@@ -7,9 +7,19 @@
 
 const Recipe = require("../../models/recipe");
 const commonResponseCodes = require("../../responses/commonRespCodes");
+const commonErrCodes = require("../../responses/commonErrorCodes");
+const validations = require("../../utils/validations");
 
 async function process(req, res) {
   try {
+    const inputTitle = req.params.title;
+    const result = validations.validateTitle(inputTitle);
+    if (result["status"] !== commonErrCodes.SUCCESS.status) {
+      return res.status(result["status"]).json({
+        code: result["code"],
+        message: result["message"],
+      });
+    }
     const recipe = await Recipe.findOneAndDelete({ title: req.params.title });
     if (recipe) {
       return res.status(200).json({

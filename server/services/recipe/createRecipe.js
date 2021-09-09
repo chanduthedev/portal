@@ -5,11 +5,20 @@
 
 const Recipe = require("../../models/recipe");
 const commResp = require("../../responses/commonRespCodes");
-
+const commErrorCodes = require("../../responses/commonErrorCodes");
+const validations = require("../../utils/validations");
 ("use strict");
 
 async function process(req, res) {
-  console.log("recipe title:", req.body.title);
+  const result = validations.validateCreateRecipeRequestBody(req.body);
+  if (result["status"] !== commErrorCodes.SUCCESS.status) {
+    return res.status(result["status"]).json({
+      code: result["code"],
+      message: result["message"],
+    });
+  }
+
+  // Making model object to insert
   const recipe = new Recipe({
     title: req.body.title,
     image: req.body.image,
@@ -18,6 +27,7 @@ async function process(req, res) {
     created_timestamp: new Date().toISOString().replace(/T/, " "),
   });
   try {
+    // Checking for already existing title
     const existingRecipe = await Recipe.find({ title: req.body.title });
     if (existingRecipe.length) {
       return res.status(400).json({
@@ -25,6 +35,7 @@ async function process(req, res) {
         message: commResp.RECIPE_ALREADY_EXISTS.message,
       });
     }
+    // No recipe with given title, can create now
     const newRecipe = await recipe.save();
     if (newRecipe) {
       return res.status(201).json({
@@ -39,7 +50,6 @@ async function process(req, res) {
       });
     }
   } catch (err) {
-    console.log("exception:%s", err);
     return res.status(400).json({
       code: commResp.RECIPE_CREATION_EXCEPTION.code,
       message: commResp.RECIPE_CREATION_EXCEPTION.message,

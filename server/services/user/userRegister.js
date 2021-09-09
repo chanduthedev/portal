@@ -5,11 +5,21 @@
 
 const User = require("../../models/user");
 const commResp = require("../../responses/commonRespCodes");
+const validations = require("../../utils/validations");
 
 ("use strict");
 
 async function process(req, res) {
   console.log("username:", req.body.userName);
+
+  const result = validations.validateCreateRecipeRequestBody(req.body);
+  if (result["status"] !== commErrorCodes.SUCCESS.status) {
+    return res.status(result["status"]).json({
+      code: result["code"],
+      message: result["message"],
+    });
+  }
+
   const user = new User({
     user_name: req.body.userName,
     password: req.body.password,
