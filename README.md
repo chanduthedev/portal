@@ -15,16 +15,6 @@ Your task is to build a vegan recipe app to create and view recipes. You should 
 - Make it visually appealing.
 - Make it available to test at a hosted domain (Heroku/Vercel/AWS/etc).
 
-### planning:
+## High Level Architecture
 
-###### Backend:
-
-1. Prepare High level Architecture
-2. Prepare swagger api specs
-3. Prepare test cases for API
-
-###### Front End(Web):
-
-1. Prepare High level Architecture
-2. Prepare UI
-3. Prepare test cases for API
+![](images/high-level-architecture.png)
