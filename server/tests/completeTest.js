@@ -20,7 +20,7 @@ describe("Complete Unit Test", () => {
   describe("Recipe API's", () => {
     require("./services/recipe/createRecipe");
     require("./services/recipe/viewRecipe");
-    // require("./services/recipe/updateRecipe");
+    require("./services/recipe/updateRecipe");
     require("./services/recipe/deleteRecipe");
   });
 

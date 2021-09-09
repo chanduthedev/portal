@@ -404,7 +404,6 @@ exports.validateLoginUserRequestBody = validateLoginUserRequestBody;
 async function allowIfLoggedin(req, res, next) {
   try {
     const userDetails = res.locals.loggedInUser;
-    console.log("allowIfLoggedin userDetails:%s", userDetails);
     if (!userDetails)
       return res.status(401).json({
         message: commonErrorCodes.USER_NEEDS_LOGIN.message,
