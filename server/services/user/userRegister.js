@@ -12,8 +12,6 @@ const path = require("path");
 ("use strict");
 
 async function process(req, res) {
-  console.log("username:", req.body.userName);
-
   const result = validations.validateCreateUserRequestBody(req.body);
   if (result["status"] !== commErrorCodes.SUCCESS.status) {
     return res.status(result["status"]).json({

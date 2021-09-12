@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 const path = require("path");
 const User = require("./models/user");
 const routes = require("./routes/apiRoutes.js");
+const appConfig = require("./appConfig").configuration;
 // TODO: Need to remove later
 const cors = require("cors");
 require("dotenv").config({
@@ -19,13 +20,11 @@ require("dotenv").config({
 const app = express();
 app.use(cors());
 
-const PORT = process.env.PORT || 7788;
-
-mongoose
-  .connect("mongodb://localhost:27017/rbac", { useNewUrlParser: true })
-  .then(() => {
-    console.log("Connected to the Database successfully");
-  });
+const PORT = process.env.PORT || appConfig.appServer.port;
+const mongoDBUrl = `${appConfig.mongoDB.host}:${appConfig.mongoDB.port}/${appConfig.mongoDB.dbName}`;
+mongoose.connect(mongoDBUrl, { useNewUrlParser: true }).then(() => {
+  console.log("Connected to the Database successfully");
+});
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));

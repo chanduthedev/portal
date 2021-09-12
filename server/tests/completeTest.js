@@ -1,8 +1,6 @@
 // ------------------------------------------------
-// * Copyright Sumitomo Mitsui Banking Corporation
-// * Asia Innovation Centre, Singapore
-// * Project/System: Voice Assistant
-// * Author: AIC Technical Development Team (ae)
+// * Application: Vegan recipes app
+// * Author: chanduthedev@gmail.com
 // ------------------------------------------------
 
 "use strict";
