@@ -1,24 +1,22 @@
-import React from "react";
-import "./App.css";
-import PreLoginNav from "./components/PreLoginNav";
-import Login from "./components/Login";
+import PreLogin from "./components/PreLogin";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import SignUp from "./components/SignUp";
-import Home from "./components/Home";
-
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import SignIn from "./components/SignIn";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <PreLoginNav />
+    <div>
+      <Router>
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" exact component={Login} />
-          <Route path="/signUp" exact component={SignUp} />
+          <Route path="/" component={PreLogin} exact={true}></Route>
+          <Route path="/signIn" component={SignIn} exact={true}></Route>
+          <Route path="/signUp" component={SignUp} exact={true}></Route>
+          <Route path="/dashboard" component={Dashboard} exact={true}></Route>
         </Switch>
-      </div>
-    </Router>
+      </Router>
+      {/* <Dashboard></Dashboard> */}
+    </div>
   );
 }
 
