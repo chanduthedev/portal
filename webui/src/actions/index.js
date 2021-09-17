@@ -1,7 +1,7 @@
-export const getFirstName = (firstName) => {
+export const getUserName = (userName) => {
   return {
-    type: "FIRST_NAME",
-    payload: firstName,
+    type: "USER_NAME",
+    payload: userName,
   };
 };
 export const getLastName = (lastName) => {
@@ -16,16 +16,23 @@ export const getEmailId = (emailId) => {
     payload: emailId,
   };
 };
-export const getCreatePwd = (createPwd) => {
+export const getPassword = (password) => {
   return {
-    type: "CREATE_PWD",
-    payload: createPwd,
+    type: "PASSWORD",
+    payload: password,
   };
 };
 export const getConfirmPwd = (confirmPwd) => {
   return {
     type: "CONFIRM_PWD",
     payload: confirmPwd,
+  };
+};
+
+export const getAccessToken = (accessToken) => {
+  return {
+    type: "ACCESS_TOKEN",
+    payload: accessToken,
   };
 };
 
@@ -38,15 +45,21 @@ export const getRecipeName = (recipeName) => {
   };
 };
 
-export const getIngName_Quatity = (name_Quantity) => {
+export const getIngradient = (name_Quantity) => {
   return {
-    type: "ING_NAME_QUANTITY",
+    type: "INGRADIENT",
     payload: name_Quantity,
   };
 };
-export const getStepNo_desc = (stepNo_desc) => {
+export const getInstruction = (stepNo_desc) => {
   return {
-    type: "STEPNUM_DESC",
+    type: "INSTRUCTION",
     payload: stepNo_desc,
+  };
+};
+export const getImage = (inputImage) => {
+  return {
+    type: "IMAGE",
+    payload: inputImage,
   };
 };

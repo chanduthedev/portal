@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getIngName_Quatity, getStepNo_desc } from "../actions";
+import { getIngradient, getInstruction } from "../actions";
 
 function CreateRecipe() {
   const dispatch = useDispatch();
@@ -61,7 +61,7 @@ function CreateRecipe() {
                 ing_Name: ingredientName,
                 ing_Qty: ingredientQty,
               };
-              dispatch(getIngName_Quatity(obj));
+              dispatch(getIngradient(obj));
               setIngredientName("");
               setIngredientQty("");
             }}
@@ -111,7 +111,7 @@ function CreateRecipe() {
                 inst_stepNum: stepNum,
                 inst_stepDesc: stepDesc,
               };
-              dispatch(getStepNo_desc(obj1));
+              dispatch(getInstruction(obj1));
               setStepNum("");
               setStepDesc("");
             }}

@@ -2,22 +2,33 @@ import React, { useState } from "react";
 import CreateRecipe from "./CreateRecipe";
 import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
+import ViewRecipe from "./ViewRecipe";
+import SignIn from "./SignIn";
+import { NavLink } from "react-router-dom";
 
 function Dashboard() {
   const [selectedType, setSelectedType] = useState("");
+  const [accesstoken, setAccessToken] = useState("123");
   const getRecipeComp = (inputType) => {
     console.log(inputType);
     setSelectedType(inputType);
   };
   const getRecipeCompData = () => {
     if (selectedType === "create") {
-      return <CreateRecipe></CreateRecipe>;
+      return <CreateRecipe />;
     } else if (selectedType === "update") {
-      return <UpdateRecipe></UpdateRecipe>;
+      return <UpdateRecipe />;
+    } else if (selectedType === "view") {
+      return <ViewRecipe />;
     } else if (selectedType === "delete") {
-      return <DeleteRecipe></DeleteRecipe>;
+      return <DeleteRecipe />;
+    } else if (selectedType === "logout") {
+      return <SignIn />;
     }
   };
+  !accesstoken
+    ? console.log("Not available")
+    : console.log(" Available token:%s", accesstoken);
   return (
     <div>
       <nav className="text-center  bg-gray-100 py-2">
@@ -44,14 +55,33 @@ function Dashboard() {
             Update Recipe
           </button>
           <button
-            className="no-underline py-2 bg-red-500 text-white rounded"
+            className="no-underline py-2 bg-yellow-500 text-white rounded my-4"
+            onClick={() => {
+              getRecipeComp("view");
+            }}
+          >
+            View Recipe
+          </button>
+
+          <button
+            className="no-underline py-2 bg-blue-500 text-white rounded my-4"
             onClick={() => {
               getRecipeComp("delete");
             }}
           >
             Delete Recipe
           </button>
+
+          <div className="flex justify-center my-3">
+            <NavLink
+              className="no-underline px-3 py-2 bg-blue-800 text-white rounded-md"
+              to="/signIn"
+            >
+              Log Out
+            </NavLink>
+          </div>
         </div>
+
         <div className="col-span-1"></div>
         <div className="col-span-7 border-2 mt-10">{getRecipeCompData()}</div>
       </div>
