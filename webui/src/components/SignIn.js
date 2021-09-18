@@ -6,7 +6,7 @@ import getUrl from "../utils/common";
 
 function SignIn() {
   const dispatch = useDispatch();
-  const signInState = useSelector((state) => state.signUp);
+  const signInState = useSelector((state) => state.login);
   function signInRequest() {
     const headers = {};
     headers["Accept"] = "application/json";

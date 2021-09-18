@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Dashboard() {
   const [selectedType, setSelectedType] = useState("");
-  const [accesstoken, setAccessToken] = useState("123");
   const signInState = useSelector((state) => state.signUp);
   const getRecipeComp = (inputType) => {
     console.log(inputType);
@@ -28,9 +27,6 @@ function Dashboard() {
       return <SignIn />;
     }
   };
-  !signInState.accesstoken
-    ? console.log("Need to log In")
-    : console.log(" Alredy logged in, token:%s", accesstoken);
   return (
     <div>
       <nav className="text-center  bg-gray-100 py-2">

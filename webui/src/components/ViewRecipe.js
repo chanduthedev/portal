@@ -1,39 +1,46 @@
-import React from "react";
-import BiryaniImg from "../images/Biryani-img.png";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import getUrl from "../utils/common";
 
 function ViewRecipe() {
-  const ingredients = [
-    {
-      itemName: "Spices",
-      itemQuantity: "100gms",
-    },
-    {
-      itemName: "Oil",
-      itemQuantity: "l00ml",
-    },
-    {
-      itemName: "Salt",
-      itemQuantity: "10gms",
-    },
-    {
-      itemName: "Rice",
-      itemQuantity: "500gms",
-    },
-  ];
-  const instructions = [
-    {
-      itemStepNo: "1",
-      itemDesc: "Take 200ml of water",
-    },
-    {
-      itemStepNo: "2",
-      itemDesc: "Boil the water",
-    },
-    {
-      itemStepNo: "3",
-      itemDesc: "Put spices and rice in water",
-    },
-  ];
+  const [recipeName, setRecipeName] = useState("");
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [ingredients, setIngredients] = useState([]);
+  const [instructions, setInstructions] = useState([]);
+  const [recipeImage, setRecipeImage] = useState("");
+  const signInState = useSelector((state) => state.login);
+  function getRecipe() {
+    const headers = {};
+    headers["Accept"] = "application/json";
+    headers["Content-Type"] = "application/json";
+    headers["x-access-token"] = signInState.accessToken;
+
+    const apiEndPoint = getUrl("viewRecipe");
+    fetch(`${apiEndPoint}${recipeName}`, {
+      method: "GET",
+      headers,
+    })
+      .then(async (response) => {
+        let respData = await response.json();
+        console.log("response:%s ", JSON.stringify(respData));
+
+        if (respData.data) {
+          setRecipeTitle(respData.data.title);
+          setIngredients(respData.data.ingredients);
+          setInstructions(respData.data.instructions);
+          setRecipeImage(respData.data.image);
+        } else {
+          setRecipeTitle("");
+          setIngredients([]);
+          setInstructions([]);
+          setRecipeImage("");
+        }
+      })
+      .catch((err) => {
+        console.error("Exception ", err);
+      });
+  }
+
   return (
     <div className="p-3">
       <div className="flex justify">
@@ -43,16 +50,24 @@ function ViewRecipe() {
         <input
           type="text"
           className=" border-2 border-gray-200 w-8/12 h-7 px-2 text-xl font-light ml-3"
+          onChange={(e) => {
+            setRecipeName(e.target.value);
+          }}
         />
-        <button className="bg-red-500 text-white px-3 py-1 rounded">
-          Search
+        <button
+          className="bg-red-500 text-white px-3 py-1 rounded"
+          onClick={() => {
+            getRecipe();
+          }}
+        >
+          Get Receip Details
         </button>
       </div>
       <div>
         <div className="mt-3">
           <label htmlFor="recipeName">Recipe Name:</label>
           <label htmlFor="Biryani" className="ml-8">
-            Biryani
+            {recipeTitle}
           </label>
         </div>
         <div className="mt-3">
@@ -61,10 +76,10 @@ function ViewRecipe() {
             return (
               <div key={index} className="ml-32">
                 <label htmlFor="" className="">
-                  {item.itemName}:
+                  {item.name}:
                 </label>
                 <label htmlFor="" className="ml-3">
-                  {item.itemQuantity}
+                  {item.amount}
                 </label>
               </div>
             );
@@ -75,9 +90,9 @@ function ViewRecipe() {
           {instructions.map((item, index) => {
             return (
               <div key={index} className="ml-32">
-                <label htmlFor="">{item.itemStepNo}.</label>
+                <label htmlFor="">{item.stepNo}.</label>
                 <label htmlFor="" className="ml-3">
-                  {item.itemDesc}
+                  {item.stepDesc}
                 </label>
               </div>
             );
@@ -85,7 +100,7 @@ function ViewRecipe() {
         </div>
         <div className="">
           <label htmlFor="">Ref.Image:</label>
-          <img src={BiryaniImg} alt="BiryaniImage" className="w-56 ml-32" />
+          <img src={recipeImage} alt="BiryaniImage" className="w-56 ml-32" />
         </div>
       </div>
       <div className="flex justify-center mt-5">

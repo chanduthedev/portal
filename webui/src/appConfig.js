@@ -15,7 +15,7 @@ module.exports = {
       },
       recipe: {
         create: "/recipe/create",
-        view: "/recipe/view",
+        view: "/recipe/",
         update: "/recipe/update",
         detele: "/recipe/",
       },
