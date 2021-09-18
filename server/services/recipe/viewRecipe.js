@@ -27,7 +27,7 @@ async function process(req, res) {
       let respData = {};
       respData["title"] = recipeDetails.title;
       respData["image"] = recipeDetails.image;
-      respData["ingradients"] = recipeDetails.ingradients;
+      respData["ingredients"] = recipeDetails.ingredients;
       respData["instructions"] = recipeDetails.instructions;
       return res.status(200).json({
         data: respData,

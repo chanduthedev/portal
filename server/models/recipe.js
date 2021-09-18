@@ -9,7 +9,7 @@ const recipeSchema = new mongoose.Schema({
   email: { type: String },
   title: { type: String, required: true },
   image: { type: String, required: true },
-  ingradients: { type: Array, default: [], required: true },
+  ingredients: { type: Array, default: [], required: true },
   instructions: { type: Array, default: [], required: true },
   created_timestamp: { type: Date },
   updated_timestamp: { type: Date },

@@ -34,7 +34,7 @@ async function process(req, res) {
       //   }
       // }
 
-      const inputIngradients = req.body.ingradients;
+      const inputIngradients = req.body.ingredients;
       if (inputIngradients) {
         const result = validations.validateIngredients(inputIngradients);
         if (result["status"] !== commonErrCodes.SUCCESS.status) {
@@ -44,8 +44,8 @@ async function process(req, res) {
           });
         }
         // Appending new ingradients to existing ingradients
-        recipeDetailsToUpdate.ingradients = [
-          ...recipeDetails.ingradients,
+        recipeDetailsToUpdate.ingredients = [
+          ...recipeDetails.ingredients,
           ...inputIngradients,
         ];
       }
@@ -76,7 +76,7 @@ async function process(req, res) {
       let respData = {};
       respData["title"] = updatedRecipeDetails.title;
       respData["image"] = updatedRecipeDetails.image;
-      respData["ingradients"] = updatedRecipeDetails.ingradients;
+      respData["ingredients"] = updatedRecipeDetails.ingredients;
       respData["instructions"] = updatedRecipeDetails.instructions;
       return res.status(200).json({
         data: respData,

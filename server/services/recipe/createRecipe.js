@@ -24,7 +24,7 @@ async function process(req, res) {
     email: req.body.email,
     title: req.body.title,
     image: req.body.image,
-    ingradients: req.body.ingradients,
+    ingredients: req.body.ingredients,
     instructions: req.body.instructions,
     created_timestamp: new Date().toISOString().replace(/T/, " "),
   });
@@ -42,7 +42,7 @@ async function process(req, res) {
     let respData = {};
     respData["title"] = newRecipe.title;
     respData["image"] = newRecipe.image;
-    respData["ingradients"] = newRecipe.ingradients;
+    respData["ingredients"] = newRecipe.ingredients;
     respData["instructions"] = newRecipe.instructions;
     if (newRecipe) {
       return res.status(201).json({

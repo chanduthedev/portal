@@ -54,7 +54,7 @@ describe("Creating Recipes", () => {
       requestBody["email"] = "chanduthedev@gmail.com";
       requestBody["title"] = "chicken_test";
       requestBody["image"] = recipeImage;
-      requestBody["ingradients"] = [{ name: "chicken", amount: 200 }];
+      requestBody["ingredients"] = [{ name: "chicken", amount: 200 }];
       requestBody["instructions"] = [{ stepNo: 1, stepDesc: "Clean chicken" }];
 
       chai
@@ -74,7 +74,7 @@ describe("Creating Recipes", () => {
           const resBodyData = res.body.data;
           expect(resBodyData).to.have.property("title");
           expect(resBodyData).to.have.property("image");
-          expect(resBodyData).to.have.property("ingradients");
+          expect(resBodyData).to.have.property("ingredients");
           expect(resBodyData).to.have.property("instructions");
           done();
         });
@@ -86,7 +86,7 @@ describe("Creating Recipes", () => {
     requestBody["email"] = "chanduthedev@gmail.com";
     requestBody["title"] = "chandu";
     requestBody["image"] = recipeImage;
-    requestBody["ingradients"] = [{ name: "chicken", amount: 200 }];
+    requestBody["ingredients"] = [{ name: "chicken", amount: 200 }];
     requestBody["instructions"] = [{ stepNo: 1, stepDesc: "Clean chicken" }];
     it("Should show recipe already exists error message", (done) => {
       chai

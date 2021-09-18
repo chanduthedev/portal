@@ -66,7 +66,7 @@ describe("View Recipes", () => {
           const resBodyData = res.body.data;
           expect(resBodyData).to.have.property("title");
           expect(resBodyData).to.have.property("image");
-          expect(resBodyData).to.have.property("ingradients");
+          expect(resBodyData).to.have.property("ingredients");
           expect(resBodyData).to.have.property("instructions");
 
           done();
