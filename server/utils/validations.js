@@ -316,7 +316,7 @@ function validateCreateRecipeRequestBody(requestBody) {
     //   return checkImage;
     // }
 
-    const checkIngradients = validateIngredients(requestBody.ingradients);
+    const checkIngradients = validateIngredients(requestBody.ingredients);
     if (checkIngradients["status"] !== commonErrorCodes.SUCCESS.status) {
       return checkIngradients;
     }

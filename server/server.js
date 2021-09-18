@@ -26,8 +26,17 @@ mongoose.connect(mongoDBUrl, { useNewUrlParser: true }).then(() => {
   console.log("Connected to the Database successfully");
 });
 
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb",
+    extended: true,
+    parameterLimit: 50000,
+  })
+);
 
 app.use(async (req, res, next) => {
   if (req.headers["x-access-token"]) {
