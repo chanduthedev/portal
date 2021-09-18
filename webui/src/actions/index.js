@@ -38,26 +38,26 @@ export const getAccessToken = (accessToken) => {
 
 // Create Recipe
 
-export const getRecipeName = (recipeName) => {
+export const getRecipeTitle = (recipeTitle) => {
   return {
-    type: "RECIPE_NAME",
-    payload: recipeName,
+    type: "RECIPE_TITLE",
+    payload: recipeTitle,
   };
 };
 
-export const getIngradient = (name_Quantity) => {
+export const getIngradient = (nameAmount) => {
   return {
-    type: "INGRADIENT",
-    payload: name_Quantity,
+    type: "INGREDIENT",
+    payload: nameAmount,
   };
 };
-export const getInstruction = (stepNo_desc) => {
+export const getInstruction = (instructionObj) => {
   return {
     type: "INSTRUCTION",
-    payload: stepNo_desc,
+    payload: instructionObj,
   };
 };
-export const getImage = (inputImage) => {
+export const getRecipeImage = (inputImage) => {
   return {
     type: "IMAGE",
     payload: inputImage,

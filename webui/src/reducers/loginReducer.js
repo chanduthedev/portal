@@ -8,8 +8,10 @@ const loginReducer = (state = loginObj, action) => {
     case "USER_NAME":
       return (state = { ...state, userName: action.payload });
     case "PASSWORD":
+      console.log("Setting login Password token");
       return (state = { ...state, password: action.payload });
     case "ACCESS_TOKEN":
+      console.log("Setting Access token");
       return (state = { ...state, accessToken: action.payload });
 
     default:

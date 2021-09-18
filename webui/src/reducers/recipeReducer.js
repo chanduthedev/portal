@@ -6,9 +6,9 @@ const recipeObj = {
 };
 const recipeReducer = (state = recipeObj, action) => {
   switch (action.type) {
-    case "RECIPE_NAME":
-      return (state = { ...state, recipeName: action.payload });
-    case "INGRADIENT":
+    case "RECIPE_TITLE":
+      return (state = { ...state, title: action.payload });
+    case "INGREDIENT":
       let intialIngredients = state.ingredients;
       intialIngredients = [...intialIngredients, action.payload];
       return (state = { ...state, ingredients: intialIngredients });
@@ -17,7 +17,7 @@ const recipeReducer = (state = recipeObj, action) => {
       intialInstructions = [...intialInstructions, action.payload];
       return (state = { ...state, instructions: intialInstructions });
     case "IMAGE":
-      return (state = { ...state, recipeImage: action.payload });
+      return (state = { ...state, image: action.payload });
 
     default:
       return state;

@@ -5,6 +5,7 @@ const signUpReducer = (state = {}, action) => {
     case "EMAIL_ID":
       return (state = { ...state, emailId: action.payload });
     case "PASSWORD":
+      console.log("Setting Sign uP Password token");
       return (state = { ...state, password: action.payload });
     default:
       return state;

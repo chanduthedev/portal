@@ -5,10 +5,12 @@ import UpdateRecipe from "./UpdateRecipe";
 import ViewRecipe from "./ViewRecipe";
 import SignIn from "./SignIn";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 function Dashboard() {
   const [selectedType, setSelectedType] = useState("");
   const [accesstoken, setAccessToken] = useState("123");
+  const signInState = useSelector((state) => state.signUp);
   const getRecipeComp = (inputType) => {
     console.log(inputType);
     setSelectedType(inputType);
@@ -26,9 +28,9 @@ function Dashboard() {
       return <SignIn />;
     }
   };
-  !accesstoken
-    ? console.log("Not available")
-    : console.log(" Available token:%s", accesstoken);
+  !signInState.accesstoken
+    ? console.log("Need to log In")
+    : console.log(" Alredy logged in, token:%s", accesstoken);
   return (
     <div>
       <nav className="text-center  bg-gray-100 py-2">
@@ -76,6 +78,11 @@ function Dashboard() {
             <NavLink
               className="no-underline px-3 py-2 bg-blue-800 text-white rounded-md"
               to="/signIn"
+              onClick={() => {
+                // signInRequest();
+                console.log(signInState);
+                console.log("signInState");
+              }}
             >
               Log Out
             </NavLink>
