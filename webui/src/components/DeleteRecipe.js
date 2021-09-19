@@ -1,54 +1,62 @@
-import React from "react";
-import BiryaniImg from "../images/Biryani-img.png";
+import React, { useState } from "react";
+import getUrl from "../utils/common";
+import { useSelector } from "react-redux";
 
 function DeleteRecipe() {
-  const ingredients = [
-    {
-      itemName: "Spices",
-      itemQuantity: "100gms",
-    },
-    {
-      itemName: "Oil",
-      itemQuantity: "l00ml",
-    },
-    {
-      itemName: "Salt",
-      itemQuantity: "10gms",
-    },
-    {
-      itemName: "Rice",
-      itemQuantity: "500gms",
-    },
-  ];
-  const instructions = [
-    {
-      itemStepNo: "1",
-      itemDesc: "Take 200ml of water",
-    },
-    {
-      itemStepNo: "2",
-      itemDesc: "Boil the water",
-    },
-    {
-      itemStepNo: "3",
-      itemDesc: "Put spices and rice in water",
-    },
-  ];
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const signInState = useSelector((state) => state.login);
+  const [errMessage, setErrMessage] = useState("");
+  function deleteRecipe() {
+    const headers = {};
+    headers["Accept"] = "application/json";
+    headers["Content-Type"] = "application/json";
+    headers["x-access-token"] = signInState.accessToken;
+
+    const apiEndPoint = getUrl("deleteRecipe");
+    fetch(`${apiEndPoint}${recipeTitle}`, {
+      method: "DELETE",
+      headers,
+    })
+      .then(async (response) => {
+        let respData = await response.json();
+        console.log("response:%s ", JSON.stringify(respData));
+        setErrMessage(respData.message);
+      })
+      .catch((err) => {
+        console.error("Exception ", err);
+      });
+  }
   return (
     <div className="p-3">
       <div className="flex justify">
         <label htmlFor="recipeID" className="">
-          Recipe ID
+          Recipe Title
         </label>
         <input
           type="text"
           placeholder="Recipe ID to delete"
           className=" border-2 border-gray-200 w-8/12 h-7 px-2 text-xl font-light ml-3"
+          onChange={(e) => {
+            setRecipeTitle(e.target.value);
+          }}
         />
+      </div>
+      <div className=" p-3">
+        <label
+          htmlFor="instructions"
+          className="text-red-800 font-sans text-xl w-28"
+        >
+          {errMessage}
+        </label>
       </div>
 
       <div className="flex justify-center mt-5">
-        <button className="bg-red-500 text-white px-10 py-2 rounded">
+        <button
+          className="bg-red-500 text-white px-10 py-2 rounded"
+          onClick={() => {
+            deleteRecipe();
+          }}
+        >
           Delete Recipe
         </button>
       </div>
