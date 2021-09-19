@@ -15,6 +15,12 @@ Your task is to build a vegan recipe app to create and view recipes. You should 
 - Make it visually appealing.
 - Make it available to test at a hosted domain (Heroku/Vercel/AWS/etc).
 
+### Limitations/Assumptions:
+
+- Recipe name should be a single word and unique(No duplicate recipe names allowed).
+- Updating ingredients only add at the end of the ingredient list
+- Updating instructions only add at the end of the instruction list
+
 ## High Level Architecture
 
 ![](images/high-level-architecture.png)
