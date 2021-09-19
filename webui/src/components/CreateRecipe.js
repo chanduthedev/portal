@@ -19,6 +19,8 @@ function CreateRecipe() {
   const [stepDesc, setStepDesc] = useState("");
   const [images, setImages] = useState([]);
   const [responseCode, setResponseCode] = useState(0);
+  const [errMessage, setErrMessage] = useState("");
+
   const maxNumber = 1;
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
@@ -55,6 +57,7 @@ function CreateRecipe() {
       .then(async (response) => {
         let respData = await response.json();
         setResponseCode(respData.code);
+        setErrMessage(respData.message);
         console.log("response code:%s ", JSON.stringify(respData.code));
         console.log("response message:%s ", JSON.stringify(respData.message));
         // dispatch(getAccessToken(respData.data.accessToken));
@@ -78,6 +81,11 @@ function CreateRecipe() {
             dispatch(getRecipeTitle(e.target.value));
           }}
         />
+      </div>
+      <div className=" p-3">
+        <label htmlFor="errMsg" className="text-red-800 font-sans text-xl w-28">
+          {errMessage}
+        </label>
       </div>
       <div className=" p-3">
         <label
@@ -195,12 +203,6 @@ function CreateRecipe() {
         </div>
       </div>
       <div className="p-3">
-        <label
-          htmlFor="refImage"
-          className="text-blue-900 font-sans text-xl w-32"
-        >
-          Ref.Image :
-        </label>
         <div className="mt-2">
           <ImageUploading
             multiple
@@ -225,7 +227,7 @@ function CreateRecipe() {
                     htmlFor="plsUploadImg"
                     className="text-blue-900 font-sans text-xl"
                   >
-                    Please upload ref. image:
+                    Recipe Image:
                   </label>
                   <button
                     className="bg-green-600 text-white px-3 py-1 rounded ml-3"

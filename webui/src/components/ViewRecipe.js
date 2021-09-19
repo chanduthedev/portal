@@ -8,6 +8,7 @@ function ViewRecipe() {
   const [ingredients, setIngredients] = useState([]);
   const [instructions, setInstructions] = useState([]);
   const [recipeImage, setRecipeImage] = useState("");
+  const [errMessage, setErrMessage] = useState("");
   const signInState = useSelector((state) => state.login);
   function getRecipe() {
     const headers = {};
@@ -23,6 +24,7 @@ function ViewRecipe() {
       .then(async (response) => {
         let respData = await response.json();
         console.log("response:%s ", JSON.stringify(respData));
+        setErrMessage(respData.message);
 
         if (respData.data) {
           setRecipeTitle(respData.data.title);
@@ -63,6 +65,13 @@ function ViewRecipe() {
           Get Receip Details
         </button>
       </div>
+
+      <div className=" p-3">
+        <label htmlFor="errMsg" className="text-red-800 font-sans text-xl w-28">
+          {errMessage}
+        </label>
+      </div>
+
       <div>
         <div className="mt-3">
           <label htmlFor="recipeName">Recipe Name:</label>

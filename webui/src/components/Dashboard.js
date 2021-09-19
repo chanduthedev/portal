@@ -6,10 +6,11 @@ import ViewRecipe from "./ViewRecipe";
 import SignIn from "./SignIn";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { getUserName, getAccessToken } from "../actions";
 
 function Dashboard() {
+  const dispatch = useDispatch();
   const [selectedType, setSelectedType] = useState("");
-  const signInState = useSelector((state) => state.signUp);
   const getRecipeComp = (inputType) => {
     console.log(inputType);
     setSelectedType(inputType);
@@ -75,9 +76,8 @@ function Dashboard() {
               className="no-underline px-3 py-2 bg-blue-800 text-white rounded-md"
               to="/signIn"
               onClick={() => {
-                // signInRequest();
-                console.log(signInState);
-                console.log("signInState");
+                dispatch(getUserName(""));
+                dispatch(getAccessToken(""));
               }}
             >
               Log Out
