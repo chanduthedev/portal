@@ -23,16 +23,17 @@ async function process(req, res) {
     let recipeDetails = await Recipe.findOne({ title: inputTitle });
     if (recipeDetails) {
       let recipeDetailsToUpdate = {};
-      // const inputImage = req.body.image;
-      // if (inputImage) {
-      //   const result = validations.validateImage(inputImage);
-      //   if (result["status"] !== commonErrCodes.SUCCESS.status) {
-      //     return res.status(result["status"]).json({
-      //       code: result["code"],
-      //       message: result["message"],
-      //     });
-      //   }
-      // }
+      const inputImage = req.body.image;
+      if (inputImage) {
+        recipeDetailsToUpdate.image = inputImage;
+        // const result = validations.validateImage(inputImage);
+        // if (result["status"] !== commonErrCodes.SUCCESS.status) {
+        //   return res.status(result["status"]).json({
+        //     code: result["code"],
+        //     message: result["message"],
+        //   });
+        // }
+      }
 
       const inputIngradients = req.body.ingredients;
       if (inputIngradients) {
