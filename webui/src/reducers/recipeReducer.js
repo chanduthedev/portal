@@ -10,12 +10,22 @@ const recipeReducer = (state = recipeObj, action) => {
       return (state = { ...state, title: action.payload });
     case "INGREDIENT":
       let intialIngredients = state.ingredients;
-      intialIngredients = [...intialIngredients, action.payload];
-      return (state = { ...state, ingredients: intialIngredients });
+      if (action.payload.name && action.payload.amount) {
+        intialIngredients = [...intialIngredients, action.payload];
+        return (state = { ...state, ingredients: intialIngredients });
+      } else {
+        return state;
+      }
     case "INSTRUCTION":
       let intialInstructions = state.instructions;
-      intialInstructions = [...intialInstructions, action.payload];
-      return (state = { ...state, instructions: intialInstructions });
+      let stepNo = state.instructions.length;
+      if (action.payload) {
+        let instruction = { stepNo: stepNo + 1, stepDesc: action.payload };
+        intialInstructions = [...intialInstructions, instruction];
+        return (state = { ...state, instructions: intialInstructions });
+      } else {
+        return state;
+      }
     case "IMAGE":
       return (state = { ...state, image: action.payload });
 

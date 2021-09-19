@@ -168,7 +168,7 @@ function UpdateRecipe() {
                 stepDesc: stepDesc,
               };
               console.log("Instructions:%s", JSON.stringify(instructionObj));
-              dispatch(getInstruction(instructionObj));
+              dispatch(getInstruction(stepDesc));
               setStepNum("");
               setStepDesc("");
             }}

@@ -31,10 +31,6 @@ function CreateRecipe() {
     setImages(imageList);
   };
 
-  // const createRecord = () => {
-  //   console.log("in create", images);
-  // };
-
   function createRecipeRequest() {
     const headers = {};
     headers["Accept"] = "application/json";
@@ -58,9 +54,6 @@ function CreateRecipe() {
         let respData = await response.json();
         setResponseCode(respData.code);
         setErrMessage(respData.message);
-        console.log("response code:%s ", JSON.stringify(respData.code));
-        console.log("response message:%s ", JSON.stringify(respData.message));
-        // dispatch(getAccessToken(respData.data.accessToken));
       })
       .catch((err) => {
         console.error("Exception ", err);
@@ -131,11 +124,11 @@ function CreateRecipe() {
           <button
             className="bg-green-500 text-white px-3 py-1 rounded"
             onClick={() => {
+              // console.log("Ingredient on click");
               var ingradientObj = {
                 name: ingradientName,
                 amount: ingradientAmount,
               };
-              console.log("ingradientObj:%s", JSON.stringify(ingradientObj));
               dispatch(getIngradient(ingradientObj));
               setIngradientName("");
               setIngradientAmount("");
@@ -192,8 +185,7 @@ function CreateRecipe() {
                 stepNo: stepNum,
                 stepDesc: stepDesc,
               };
-              console.log("Instructions:%s", JSON.stringify(instructionObj));
-              dispatch(getInstruction(instructionObj));
+              dispatch(getInstruction(stepDesc));
               setStepNum("");
               setStepDesc("");
             }}
