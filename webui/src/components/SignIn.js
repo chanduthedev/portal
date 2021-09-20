@@ -70,6 +70,7 @@ function SignIn() {
           <div className="w-7/12">
             <input
               type="text"
+              aria-label="username"
               className=" border-2 border-gray-200 w-full h-7 px-2 text-xl font-light"
               onChange={(e) => {
                 if (e.target.value.length > 5) {
@@ -100,6 +101,7 @@ function SignIn() {
           <div className="w-7/12">
             <input
               type="password"
+              aria-label="password"
               className=" border-2 border-gray-200 w-full h-7 px-2 text-xl font-light"
               onChange={(e) => {
                 if (e.target.value.length > 5) {
@@ -125,7 +127,11 @@ function SignIn() {
         </div>
       </div>
       <div className="text-center">
-        <label htmlFor="" className="text-red-500 text-sm">
+        <label
+          htmlFor=""
+          aria-label="serviceErrMsg"
+          className="text-red-500 text-sm"
+        >
           {serviceErrMsg}
         </label>
         <div className="flex justify-center my-3">

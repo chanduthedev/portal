@@ -21,11 +21,25 @@ const app = express();
 app.use(cors());
 
 const PORT = process.env.PORT || appConfig.appServer.port;
-const mongoDBUrl = `${appConfig.mongoDB.host}:${appConfig.mongoDB.port}/${appConfig.mongoDB.dbName}`;
-mongoose.connect(mongoDBUrl, { useNewUrlParser: true }).then(() => {
-  console.log("Connected to the Database successfully");
-});
+const mongoDBUrl = process.env.MONGODB_CONNECTION_STRING;
+mongoose
+  .connect(mongoDBUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => {
+    console.log("Connected to the Database successfully");
+  });
 
+// const { MongoClient } = require("mongodb");
+// const uri =
+//   "mongodb+srv://recipe_user:<password>@cluster0.c8m58.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// client.connect((err) => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
 // app.use(express.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
 
