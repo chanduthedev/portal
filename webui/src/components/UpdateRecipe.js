@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ImageUploading from "react-images-uploading";
 import {
   updateRecipeService,
@@ -8,7 +8,6 @@ import {
 import { getCommonHeaders } from "../utils/common";
 
 function UpdateRecipe() {
-  const recipeData = useSelector((state) => state.recipe);
   const singInData = useSelector((state) => state.login);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [ingredients, setIngredients] = useState([]);
@@ -103,9 +102,6 @@ function UpdateRecipe() {
         <button
           className="bg-purple-500 text-white px-10 py-1 rounded"
           onClick={() => {
-            // alert("Hello");
-            console.log(recipeData);
-            // console.log("signInState");
             getRecipeRequest();
           }}
         >
@@ -126,7 +122,6 @@ function UpdateRecipe() {
         ))}
         {ingredients.map((inradient, id) => (
           <li key={id}>
-            <br></br>
             {inradient.name} - {inradient.amount}grams
           </li>
         ))}
@@ -300,9 +295,6 @@ function UpdateRecipe() {
         <button
           className="bg-purple-500 text-white px-10 py-1 rounded"
           onClick={() => {
-            // alert("Hello");
-            console.log(recipeData);
-            // console.log("signInState");
             updateRecipeRequest();
           }}
         >

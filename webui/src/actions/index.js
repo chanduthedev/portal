@@ -35,31 +35,3 @@ export const getAccessToken = (accessToken) => {
     payload: accessToken,
   };
 };
-
-// Create Recipe
-
-export const getRecipeTitle = (recipeTitle) => {
-  return {
-    type: "RECIPE_TITLE",
-    payload: recipeTitle,
-  };
-};
-
-export const getIngradient = (nameAmount) => {
-  return {
-    type: "INGREDIENT",
-    payload: nameAmount,
-  };
-};
-export const getInstruction = (instructionObj) => {
-  return {
-    type: "INSTRUCTION",
-    payload: instructionObj,
-  };
-};
-export const getRecipeImage = (inputImage) => {
-  return {
-    type: "IMAGE",
-    payload: inputImage,
-  };
-};
