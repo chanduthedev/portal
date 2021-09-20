@@ -3,7 +3,8 @@ import validator from "validator";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserName, getEmailId, getPassword } from "../actions";
-import getUrl from "../utils/common";
+import { getCommonHeaders } from "../utils/common";
+import { registerService } from "../services/UserServices";
 
 function SignUp() {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function SignUp() {
     confirmErrorMsg: "",
   });
 
-  function signUpRequest() {
+  async function signUpRequest() {
     if (
       errorList.isUserNameError ||
       errorList.isEmailError ||
@@ -30,35 +31,19 @@ function SignUp() {
     ) {
       return;
     }
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
-    // headers["Access-Control-Allow-Origin"] = "http://localhost:7788";
-    // headers["Access-Control-Allow-Credentials"] = "true";
-    const body = {};
+    const headers = getCommonHeaders();
 
+    const body = {};
     body["userName"] = signUpState.userName;
     body["password"] = signUpState.password;
     body["email"] = signUpState.emailId;
 
-    const apiEndPoint = getUrl("register");
-    fetch(apiEndPoint, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        console.log("response:%s ", JSON.stringify(respData));
-        if (!respData.data) {
-          setServiceErrMsg(respData.message);
-        } else {
-          history.push("/signIn");
-        }
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    const respData = await registerService(body, headers);
+    if (!respData.data) {
+      setServiceErrMsg(respData.message);
+    } else {
+      history.push("/signIn");
+    }
   }
 
   const onClickBackHome = () => {

@@ -6,8 +6,9 @@ import {
   getInstruction,
   getRecipeImage,
 } from "../actions";
-import getUrl from "../utils/common";
 import ImageUploading from "react-images-uploading";
+import { createRecipeService } from "../services/RecipeServices";
+import { getCommonHeaders } from "../utils/common";
 
 function CreateRecipe() {
   const dispatch = useDispatch();
@@ -31,33 +32,19 @@ function CreateRecipe() {
     setImages(imageList);
   };
 
-  function createRecipeRequest() {
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
+  async function createRecipeRequest() {
+    let headers = getCommonHeaders();
     headers["x-access-token"] = singInData.accessToken;
-    const body = {};
 
+    const body = {};
     body["userName"] = singInData.userName;
     body["title"] = recipeData.title;
     body["ingredients"] = recipeData.ingredients;
     body["instructions"] = recipeData.instructions;
     body["image"] = recipeData.image;
-    const apiEndPoint = getUrl("createRecipe");
-
-    fetch(apiEndPoint, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        setResponseCode(respData.code);
-        setErrMessage(respData.message);
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    const respData = await createRecipeService(body, headers);
+    setResponseCode(respData.code);
+    setErrMessage(respData.message);
   }
 
   return (
@@ -265,7 +252,7 @@ function CreateRecipe() {
           className="bg-green-600 text-white px-10 py-1 rounded"
           onClick={() => {
             // alert("Hello");
-            console.log(recipeData);
+            // console.log(recipeData);
             // console.log("signInState");
             createRecipeRequest();
           }}

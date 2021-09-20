@@ -20,4 +20,12 @@ function getUrl(apiName) {
 
   return `${host}:${port}${endPoint}`;
 }
-export default getUrl;
+
+function getCommonHeaders() {
+  const headers = {};
+  headers["Accept"] = "application/json";
+  headers["Content-Type"] = "application/json";
+  return headers;
+}
+
+export { getUrl, getCommonHeaders };

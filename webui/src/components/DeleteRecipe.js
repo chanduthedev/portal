@@ -1,30 +1,19 @@
 import React, { useState } from "react";
-import getUrl from "../utils/common";
 import { useSelector } from "react-redux";
+import { deleteRecipeService } from "../services/RecipeServices";
+import { getCommonHeaders } from "../utils/common";
 
 function DeleteRecipe() {
   const [recipeTitle, setRecipeTitle] = useState("");
   const signInState = useSelector((state) => state.login);
   const [errMessage, setErrMessage] = useState("");
-  function deleteRecipe() {
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
+  async function deleteRecipe() {
+    const headers = getCommonHeaders();
     headers["x-access-token"] = signInState.accessToken;
 
-    const apiEndPoint = getUrl("deleteRecipe");
-    fetch(`${apiEndPoint}${recipeTitle}`, {
-      method: "DELETE",
-      headers,
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        console.log("response:%s ", JSON.stringify(respData));
-        setErrMessage(respData.message);
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    const respData = await deleteRecipeService(recipeTitle, headers);
+
+    setErrMessage(respData.message);
   }
   return (
     <div className="p-3">

@@ -8,6 +8,8 @@ import {
 } from "../actions";
 import getUrl from "../utils/common";
 import ImageUploading from "react-images-uploading";
+import { updateRecipeService } from "../services/RecipeServices";
+import { getCommonHeaders } from "../utils/common";
 
 function UpdateRecipe() {
   const dispatch = useDispatch();
@@ -31,33 +33,20 @@ function UpdateRecipe() {
     setImages(imageList);
   };
 
-  function updateRecipeRequest() {
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
+  async function updateRecipeRequest() {
+    const headers = getCommonHeaders();
     headers["x-access-token"] = singInData.accessToken;
-    const body = {};
 
+    const body = {};
     body["userName"] = singInData.userName;
     body["title"] = recipeData.title;
     body["ingredients"] = recipeData.ingredients;
     body["instructions"] = recipeData.instructions;
     body["image"] = recipeData.image;
-    const apiEndPoint = getUrl("updateRecipe");
 
-    fetch(apiEndPoint, {
-      method: "PATCH",
-      headers,
-      body: JSON.stringify(body),
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        setResponseCode(respData.code);
-        setErrMessage(respData.message);
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    const respData = await updateRecipeService(body, headers);
+    setResponseCode(respData.code);
+    setErrMessage(respData.message);
   }
 
   return (

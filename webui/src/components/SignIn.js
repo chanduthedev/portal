@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserName, getPassword, getAccessToken } from "../actions";
-import getUrl from "../utils/common";
+import { loginService } from "../services/UserServices";
+import { getCommonHeaders } from "../utils/common";
 
 function SignIn() {
   const dispatch = useDispatch();
@@ -15,7 +16,7 @@ function SignIn() {
     userNameErrorMsg: "",
   });
   const [serviceErrMsg, setServiceErrMsg] = useState("");
-  function signInRequest() {
+  async function signInRequest() {
     if (errorList.isPwdError || errorList.isUserNameError) {
       setErrorList({
         ...errorList,
@@ -29,38 +30,18 @@ function SignIn() {
       });
       return;
     }
-    console.log("calling service");
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
-    const body = {};
+    const headers = getCommonHeaders();
 
+    const body = {};
     body["userName"] = signInState.userName;
     body["password"] = signInState.password;
-    const apiEndPoint = getUrl("login");
-    console.log("apiEndPoint:%s", apiEndPoint);
-    fetch(apiEndPoint, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(body),
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        console.log("response:%s ", JSON.stringify(respData));
-        if (respData.data) {
-          console.log(
-            "accessToken:%s ",
-            JSON.stringify(respData.data.accessToken)
-          );
-          dispatch(getAccessToken(respData.data.accessToken));
-          history.push("/dashboard");
-        } else {
-          setServiceErrMsg(respData.message);
-        }
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    const respData = await loginService(body, headers);
+    if (respData.data) {
+      dispatch(getAccessToken(respData.data.accessToken));
+      history.push("/dashboard");
+    } else {
+      setServiceErrMsg(respData.message);
+    }
   }
   const onClickBackHome = () => {
     history.push("/");

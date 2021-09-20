@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import getUrl from "../utils/common";
+import { viewRecipeService } from "../services/RecipeServices";
+import { getCommonHeaders } from "../utils/common";
 
 function ViewRecipe() {
   const [recipeName, setRecipeName] = useState("");
@@ -10,37 +11,24 @@ function ViewRecipe() {
   const [recipeImage, setRecipeImage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const signInState = useSelector((state) => state.login);
-  function getRecipe() {
-    const headers = {};
-    headers["Accept"] = "application/json";
-    headers["Content-Type"] = "application/json";
+  async function getRecipe() {
+    const headers = getCommonHeaders();
     headers["x-access-token"] = signInState.accessToken;
 
-    const apiEndPoint = getUrl("viewRecipe");
-    fetch(`${apiEndPoint}${recipeName}`, {
-      method: "GET",
-      headers,
-    })
-      .then(async (response) => {
-        let respData = await response.json();
-        console.log("response:%s ", JSON.stringify(respData));
-        setErrMessage(respData.message);
+    const respData = await viewRecipeService(recipeName, headers);
+    setErrMessage(respData.message);
 
-        if (respData.data) {
-          setRecipeTitle(respData.data.title);
-          setIngredients(respData.data.ingredients);
-          setInstructions(respData.data.instructions);
-          setRecipeImage(respData.data.image);
-        } else {
-          setRecipeTitle("");
-          setIngredients([]);
-          setInstructions([]);
-          setRecipeImage("");
-        }
-      })
-      .catch((err) => {
-        console.error("Exception ", err);
-      });
+    if (respData.data) {
+      setRecipeTitle(respData.data.title);
+      setIngredients(respData.data.ingredients);
+      setInstructions(respData.data.instructions);
+      setRecipeImage(respData.data.image);
+    } else {
+      setRecipeTitle("");
+      setIngredients([]);
+      setInstructions([]);
+      setRecipeImage("");
+    }
   }
 
   return (
