@@ -8,7 +8,10 @@ import {
 } from "../actions";
 import getUrl from "../utils/common";
 import ImageUploading from "react-images-uploading";
-import { updateRecipeService } from "../services/RecipeServices";
+import {
+  updateRecipeService,
+  viewRecipeService,
+} from "../services/RecipeServices";
 import { getCommonHeaders } from "../utils/common";
 
 function UpdateRecipe() {
@@ -17,11 +20,13 @@ function UpdateRecipe() {
   const singInData = useSelector((state) => state.login);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [ingredients, setIngredients] = useState([]);
+  const [existingIngredients, setExistingIngredients] = useState([]);
   const [ingradientName, setIngradientName] = useState("");
   const [ingradientAmount, setIngradientAmount] = useState("");
   const [stepNum, setStepNum] = useState(0);
   const [stepDesc, setStepDesc] = useState("");
   const [instructions, setInstructions] = useState([]);
+  const [existingInstructions, setExistingInstructions] = useState([]);
   const [recipeImage, setRecipeImage] = useState("");
   const [images, setImages] = useState([]);
   const [responseCode, setResponseCode] = useState(0);
@@ -56,11 +61,36 @@ function UpdateRecipe() {
     setErrMessage(respData.message);
   }
 
+  async function getRecipeRequest() {
+    const headers = getCommonHeaders();
+    headers["x-access-token"] = singInData.accessToken;
+
+    if (!recipeTitle) {
+      setErrMessage("Recipe Title Should not be empty.");
+      return;
+    }
+    const respData = await viewRecipeService(recipeTitle, headers);
+    setErrMessage(respData.message);
+
+    if (respData.data) {
+      setRecipeTitle(respData.data.title);
+      setExistingIngredients(respData.data.ingredients);
+      setExistingInstructions(respData.data.instructions);
+      setRecipeImage(respData.data.image);
+      setStepNum(respData.data.instructions.length + 1);
+    } else {
+      setRecipeTitle("");
+      setIngredients([]);
+      setInstructions([]);
+      setRecipeImage("");
+    }
+  }
+
   return (
     <div className="p-3">
       <div className="flex justify-between p-3">
         <label htmlFor="recipeName" className="text-blue-900 font-sans text-xl">
-          Recipe Name :
+          Recipe Title :
         </label>
         <div className="w-7/12">
           <input
@@ -80,6 +110,17 @@ function UpdateRecipe() {
             {titleErrMsg}
           </label>
         </div>
+        <button
+          className="bg-purple-500 text-white px-10 py-1 rounded"
+          onClick={() => {
+            // alert("Hello");
+            console.log(recipeData);
+            // console.log("signInState");
+            getRecipeRequest();
+          }}
+        >
+          Get Recipe Details
+        </button>
       </div>
       <div className=" p-3">
         <label
@@ -88,6 +129,17 @@ function UpdateRecipe() {
         >
           Ingredients :
         </label>
+        {existingIngredients.map((inradient, id) => (
+          <li key={id}>
+            {inradient.name} - {inradient.amount} grams
+          </li>
+        ))}
+        {ingredients.map((inradient, id) => (
+          <li key={id}>
+            <br></br>
+            {inradient.name} - {inradient.amount} grams
+          </li>
+        ))}
         <div className="flex justify-between mt-2">
           <label
             htmlFor="ingredientName"
@@ -143,26 +195,24 @@ function UpdateRecipe() {
         >
           Instructions :
         </label>
-        <div className="flex justify-between mt-2">
-          <label
-            htmlFor="stepNo"
-            className="text-blue-900 font-sans text-xl w-28"
-          >
-            Step No.
-          </label>
+        {existingInstructions.map((instruction, id) => (
+          <lo key={id}>
+            <br></br>
+            Step {instruction.stepNo}. {instruction.stepDesc}
+          </lo>
+        ))}
+        {instructions.map((instruction, id) => (
+          <lo key={id}>
+            <br></br>
+            Step {instruction.stepNo}. {instruction.stepDesc}
+          </lo>
+        ))}
+
+        <div className="flex mt-2">
           <input
             type="text"
-            className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
-          />
-          <label
-            htmlFor="description"
-            className="text-blue-900 font-sans text-xl w-28 "
-          >
-            Description
-          </label>
-          <input
-            type="text"
-            className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
+            placeholder="Add instruction"
+            className=" border-2 justify border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
             onChange={(e) => {
               setStepDesc(e.target.value);
             }}

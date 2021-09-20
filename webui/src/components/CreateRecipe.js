@@ -56,7 +56,7 @@ function CreateRecipe() {
     <div className="p-3">
       <div className="flex justify p-2">
         <label htmlFor="recipeName" className="text-blue-900 font-sans text-xl">
-          Recipe Name :
+          Recipe Title :
         </label>
         <div className="w-7/12">
           <input
@@ -86,10 +86,9 @@ function CreateRecipe() {
           Ingredients :
         </label>
         {ingredients.map((inradient, id) => (
-          <lo key={id}>
-            <br></br>
-            {id + 1}.{inradient.name} - {inradient.amount}
-          </lo>
+          <li key={id}>
+            {inradient.name} - {inradient.amount}
+          </li>
         ))}
         <div className="flex justify-between mt-2">
           <label
@@ -153,25 +152,10 @@ function CreateRecipe() {
             Step {instruction.stepNo}. {instruction.stepDesc}
           </lo>
         ))}
-        <div className="flex justify-between mt-2">
-          <label
-            htmlFor="stepNo"
-            className="text-blue-900 font-sans text-xl w-28"
-          >
-            Step No.
-          </label>
+        <div className="flex justify mt-2">
           <input
             type="text"
-            className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
-          />
-          <label
-            htmlFor="description"
-            className="text-blue-900 font-sans text-xl w-28 "
-          >
-            Description
-          </label>
-          <input
-            type="text"
+            placeholder="Add instruction"
             className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
             onChange={(e) => {
               setStepDesc(e.target.value);
@@ -192,7 +176,7 @@ function CreateRecipe() {
               }
             }}
           >
-            Add Instruction
+            Add
           </button>
         </div>
       </div>

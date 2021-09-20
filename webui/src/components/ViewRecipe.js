@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { viewRecipeService } from "../services/RecipeServices";
+import {
+  viewRecipeService,
+  deleteRecipeService,
+} from "../services/RecipeServices";
 import { getCommonHeaders } from "../utils/common";
 
 function ViewRecipe() {
@@ -10,13 +13,20 @@ function ViewRecipe() {
   const [instructions, setInstructions] = useState([]);
   const [recipeImage, setRecipeImage] = useState("");
   const [errMessage, setErrMessage] = useState("");
+  const [delErrMessage, setDelErrMessage] = useState("");
   const signInState = useSelector((state) => state.login);
   async function getRecipe() {
     const headers = getCommonHeaders();
     headers["x-access-token"] = signInState.accessToken;
 
+    if (!recipeName) {
+      setErrMessage("Recipe Title Should not be empty.");
+      return;
+    }
+
     const respData = await viewRecipeService(recipeName, headers);
     setErrMessage(respData.message);
+    setDelErrMessage("");
 
     if (respData.data) {
       setRecipeTitle(respData.data.title);
@@ -31,11 +41,24 @@ function ViewRecipe() {
     }
   }
 
+  async function deleteRecipe() {
+    const headers = getCommonHeaders();
+    headers["x-access-token"] = signInState.accessToken;
+
+    if (!recipeName) {
+      setErrMessage("Recipe Title Should not be empty.");
+      return;
+    }
+    const respData = await deleteRecipeService(recipeName, headers);
+    setDelErrMessage(respData.message);
+    setErrMessage("");
+  }
+
   return (
     <div className="p-3">
       <div className="flex justify">
         <label htmlFor="recipeID" className="">
-          Recipe ID
+          Recipe Title
         </label>
         <div className="w-7/12">
           <input
@@ -74,20 +97,14 @@ function ViewRecipe() {
         </div>
         <div className="mt-3">
           <label htmlFor="ingredients">Ingredients:</label>
-          {ingredients.map((item, index) => {
-            return (
-              <div key={index} className="ml-32">
-                <label htmlFor="" className="">
-                  {item.name}:
-                </label>
-                <label htmlFor="" className="ml-3">
-                  {item.amount}
-                </label>
-              </div>
-            );
-          })}
+          {ingredients.map((ingredient, id) => (
+            <li key={id}>
+              {ingredient.name} - {ingredient.amount} grams
+            </li>
+          ))}
         </div>
-        <div>
+
+        <div className="mt-3">
           <label htmlFor="instructions">Instructions:</label>
           {instructions.map((item, index) => {
             return (
@@ -106,9 +123,19 @@ function ViewRecipe() {
         </div>
       </div>
       <div className="flex justify-center mt-5">
-        <button className="bg-red-500 text-white px-10 py-1 rounded">
+        <button
+          className="bg-red-500 text-white px-10 py-1 rounded"
+          onClick={() => {
+            deleteRecipe();
+          }}
+        >
           Delete Recipe
         </button>
+      </div>
+      <div className="mt-5 flex justify-center ">
+        <label htmlFor="errMessage" className="text-red-500 font-sans text-xl">
+          {delErrMessage}
+        </label>
       </div>
     </div>
   );

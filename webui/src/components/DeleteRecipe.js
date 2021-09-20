@@ -10,6 +10,10 @@ function DeleteRecipe() {
   async function deleteRecipe() {
     const headers = getCommonHeaders();
     headers["x-access-token"] = signInState.accessToken;
+    if (!recipeTitle) {
+      setErrMessage("Recipe Title Should not be empty.");
+      return;
+    }
 
     const respData = await deleteRecipeService(recipeTitle, headers);
 
