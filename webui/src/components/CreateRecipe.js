@@ -1,18 +1,10 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getRecipeTitle,
-  getIngradient,
-  getInstruction,
-  getRecipeImage,
-} from "../actions";
+import { useSelector } from "react-redux";
 import ImageUploading from "react-images-uploading";
 import { createRecipeService } from "../services/RecipeServices";
 import { getCommonHeaders } from "../utils/common";
 
 function CreateRecipe() {
-  const dispatch = useDispatch();
-  // const recipeData = useSelector((state) => state.recipe);
   const singInData = useSelector((state) => state.login);
   const [recipeTitle, setRecipeTitle] = useState("");
   const [ingredients, setIngredients] = useState([]);
@@ -23,7 +15,6 @@ function CreateRecipe() {
   const [instructions, setInstructions] = useState([]);
   const [recipeImage, setRecipeImage] = useState("");
   const [images, setImages] = useState([]);
-  const [responseCode, setResponseCode] = useState(0);
   const [errMessage, setErrMessage] = useState("");
   const [titleErrMsg, setTitleErrMsg] = useState("");
 
@@ -48,7 +39,6 @@ function CreateRecipe() {
     body["instructions"] = instructions;
     body["image"] = recipeImage;
     const respData = await createRecipeService(body, headers);
-    setResponseCode(respData.code);
     setErrMessage(respData.message);
   }
 
@@ -87,7 +77,7 @@ function CreateRecipe() {
         </label>
         {ingredients.map((inradient, id) => (
           <li key={id}>
-            {inradient.name} - {inradient.amount}
+            {inradient.name} - {inradient.amount}grams
           </li>
         ))}
         <div className="flex justify-between mt-2">
@@ -112,7 +102,11 @@ function CreateRecipe() {
           </label>
 
           <input
-            type="text"
+            type="number"
+            // step="any"
+            inputMode="decimal"
+            placeholder="Only numeric values"
+            pattern="\d*"
             className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
             onChange={(e) => {
               setIngradientAmount(e.target.value);

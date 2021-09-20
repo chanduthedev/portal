@@ -4,15 +4,13 @@ import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
 import ViewRecipe from "./ViewRecipe";
 import SignIn from "./SignIn";
-import { NavLink, useHistory } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { getUserName, getAccessToken } from "../actions";
 
 function Dashboard() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const [selectedType, setSelectedType] = useState("");
-  const singInData = useSelector((state) => state.login);
   const getRecipeComp = (inputType) => {
     console.log(inputType);
     setSelectedType(inputType);

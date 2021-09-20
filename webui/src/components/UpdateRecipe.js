@@ -1,12 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getRecipeTitle,
-  getIngradient,
-  getInstruction,
-  getRecipeImage,
-} from "../actions";
-import getUrl from "../utils/common";
 import ImageUploading from "react-images-uploading";
 import {
   updateRecipeService,
@@ -15,7 +8,6 @@ import {
 import { getCommonHeaders } from "../utils/common";
 
 function UpdateRecipe() {
-  const dispatch = useDispatch();
   const recipeData = useSelector((state) => state.recipe);
   const singInData = useSelector((state) => state.login);
   const [recipeTitle, setRecipeTitle] = useState("");
@@ -29,7 +21,6 @@ function UpdateRecipe() {
   const [existingInstructions, setExistingInstructions] = useState([]);
   const [recipeImage, setRecipeImage] = useState("");
   const [images, setImages] = useState([]);
-  const [responseCode, setResponseCode] = useState(0);
   const [errMessage, setErrMessage] = useState("");
   const [titleErrMsg, setTitleErrMsg] = useState("");
   const maxNumber = 1;
@@ -57,7 +48,6 @@ function UpdateRecipe() {
 
     console.log("body:%s", JSON.stringify(body));
     const respData = await updateRecipeService(body, headers);
-    setResponseCode(respData.code);
     setErrMessage(respData.message);
   }
 
@@ -131,13 +121,13 @@ function UpdateRecipe() {
         </label>
         {existingIngredients.map((inradient, id) => (
           <li key={id}>
-            {inradient.name} - {inradient.amount} grams
+            {inradient.name} - {inradient.amount}grams
           </li>
         ))}
         {ingredients.map((inradient, id) => (
           <li key={id}>
             <br></br>
-            {inradient.name} - {inradient.amount} grams
+            {inradient.name} - {inradient.amount}grams
           </li>
         ))}
         <div className="flex justify-between mt-2">
@@ -161,7 +151,11 @@ function UpdateRecipe() {
             Quantity
           </label>
           <input
-            type="text"
+            type="number"
+            step="any"
+            inputMode="decimal"
+            placeholder="Only numeric values"
+            pattern="\d*"
             className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
             onChange={(e) => {
               setIngradientAmount(e.target.value);
@@ -184,7 +178,7 @@ function UpdateRecipe() {
               }
             }}
           >
-            Add Inredient
+            Add Ingredient
           </button>
         </div>
       </div>
@@ -312,7 +306,7 @@ function UpdateRecipe() {
             updateRecipeRequest();
           }}
         >
-          Update Recipe
+          Update Recipe Details
         </button>
       </div>
       <div className="mt-5 flex justify-center ">

@@ -99,7 +99,7 @@ function ViewRecipe() {
           <label htmlFor="ingredients">Ingredients:</label>
           {ingredients.map((ingredient, id) => (
             <li key={id}>
-              {ingredient.name} - {ingredient.amount} grams
+              {ingredient.name} - {ingredient.amount}grams
             </li>
           ))}
         </div>
