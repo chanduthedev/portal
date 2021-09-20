@@ -15,19 +15,25 @@ function UpdateRecipe() {
   const dispatch = useDispatch();
   const recipeData = useSelector((state) => state.recipe);
   const singInData = useSelector((state) => state.login);
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [ingredients, setIngredients] = useState([]);
   const [ingradientName, setIngradientName] = useState("");
   const [ingradientAmount, setIngradientAmount] = useState("");
   const [stepNum, setStepNum] = useState(0);
   const [stepDesc, setStepDesc] = useState("");
+  const [instructions, setInstructions] = useState([]);
+  const [recipeImage, setRecipeImage] = useState("");
   const [images, setImages] = useState([]);
   const [responseCode, setResponseCode] = useState(0);
   const [errMessage, setErrMessage] = useState("");
+  const [titleErrMsg, setTitleErrMsg] = useState("");
   const maxNumber = 1;
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
     if (imageList.length && imageList[0].data_url) {
       console.log("Image loaded");
-      dispatch(getRecipeImage(imageList[0].data_url));
+      setRecipeImage(imageList[0].data_url);
+      // dispatch(getRecipeImage(imageList[0].data_url));
     }
     console.log(addUpdateIndex);
     setImages(imageList);
@@ -39,11 +45,12 @@ function UpdateRecipe() {
 
     const body = {};
     body["userName"] = singInData.userName;
-    body["title"] = recipeData.title;
-    body["ingredients"] = recipeData.ingredients;
-    body["instructions"] = recipeData.instructions;
-    body["image"] = recipeData.image;
+    body["title"] = recipeTitle;
+    body["ingredients"] = ingredients;
+    body["instructions"] = instructions;
+    body["image"] = recipeImage;
 
+    console.log("body:%s", JSON.stringify(body));
     const respData = await updateRecipeService(body, headers);
     setResponseCode(respData.code);
     setErrMessage(respData.message);
@@ -55,14 +62,24 @@ function UpdateRecipe() {
         <label htmlFor="recipeName" className="text-blue-900 font-sans text-xl">
           Recipe Name :
         </label>
-        <input
-          type="text"
-          className=" border-2 border-gray-200 w-8/12 h-7 px-2 text-xl font-light"
-          aria-label="recipeTitle"
-          onChange={(e) => {
-            dispatch(getRecipeTitle(e.target.value));
-          }}
-        />
+        <div className="w-7/12">
+          <input
+            type="text"
+            className=" border-2 border-gray-200 w-full h-7 px-2 text-xl font-light"
+            onChange={(e) => {
+              if (e.target.value.length > 5) {
+                // setRecipeName(e.target.value);
+                setTitleErrMsg("");
+              } else {
+                setTitleErrMsg("Recipe title should be atleast 5 letters.");
+              }
+              setRecipeTitle(e.target.value);
+            }}
+          />
+          <label htmlFor="" className="text-red-500 text-smz">
+            {titleErrMsg}
+          </label>
+        </div>
       </div>
       <div className=" p-3">
         <label
@@ -101,14 +118,18 @@ function UpdateRecipe() {
           <button
             className="bg-purple-500 text-white px-3 py-1 rounded"
             onClick={() => {
-              var ingradientObj = {
-                name: ingradientName,
-                amount: ingradientAmount,
-              };
-              console.log("ingradientObj:%s", JSON.stringify(ingradientObj));
-              dispatch(getIngradient(ingradientObj));
-              setIngradientName("");
-              setIngradientAmount("");
+              // console.log("Ingredient on click");
+              if (ingradientName && ingradientName) {
+                var ingradientObj = {
+                  name: ingradientName,
+                  amount: ingradientAmount,
+                };
+                // dispatch(getIngradient(ingradientObj));
+                const existingArray = [...ingredients, ingradientObj];
+                setIngredients(existingArray);
+                setIngradientName("");
+                setIngradientAmount("");
+              }
             }}
           >
             Add Inredient
@@ -132,9 +153,6 @@ function UpdateRecipe() {
           <input
             type="text"
             className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
-            onChange={(e) => {
-              setStepNum(e.target.value);
-            }}
           />
           <label
             htmlFor="description"
@@ -152,14 +170,16 @@ function UpdateRecipe() {
           <button
             className="bg-purple-500 text-white px-3 py-1 rounded"
             onClick={() => {
-              var instructionObj = {
-                stepNo: stepNum,
-                stepDesc: stepDesc,
-              };
-              console.log("Instructions:%s", JSON.stringify(instructionObj));
-              dispatch(getInstruction(stepDesc));
-              setStepNum("");
-              setStepDesc("");
+              if (stepDesc) {
+                var instructionObj = {
+                  stepNo: stepNum,
+                  stepDesc: stepDesc,
+                };
+                const existingArray = [...instructions, instructionObj];
+                setInstructions(existingArray);
+                setStepNum(stepNum + parseInt(1));
+                setStepDesc("");
+              }
             }}
           >
             Add Instruction
@@ -244,6 +264,11 @@ function UpdateRecipe() {
         >
           Update Recipe
         </button>
+      </div>
+      <div className="mt-5 flex justify-center ">
+        <label htmlFor="errMessage" className="text-red-500 font-sans text-xl">
+          {errMessage}
+        </label>
       </div>
     </div>
   );

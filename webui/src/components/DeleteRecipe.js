@@ -21,24 +21,25 @@ function DeleteRecipe() {
         <label htmlFor="recipeID" className="">
           Recipe Title
         </label>
-        <input
-          type="text"
-          placeholder="Recipe ID to delete"
-          className=" border-2 border-gray-200 w-8/12 h-7 px-2 text-xl font-light ml-3"
-          onChange={(e) => {
-            setRecipeTitle(e.target.value);
-          }}
-        />
+        <div className="w-7/12">
+          <input
+            type="text"
+            className=" border-2 border-gray-200 w-full h-7 px-2 text-xl font-light"
+            onChange={(e) => {
+              if (e.target.value.length > 5) {
+                // setRecipeName(e.target.value);
+                setErrMessage("");
+              } else {
+                setErrMessage("Recipe title should be atleast 5 letters.");
+              }
+              setRecipeTitle(e.target.value);
+            }}
+          />
+          <label htmlFor="" className="text-red-500 text-smz">
+            {errMessage}
+          </label>
+        </div>
       </div>
-      <div className=" p-3">
-        <label
-          htmlFor="instructions"
-          className="text-red-800 font-sans text-xl w-28"
-        >
-          {errMessage}
-        </label>
-      </div>
-
       <div className="flex justify-center mt-5">
         <button
           className="bg-red-500 text-white px-10 py-2 rounded"

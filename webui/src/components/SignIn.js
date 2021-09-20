@@ -17,17 +17,25 @@ function SignIn() {
   });
   const [serviceErrMsg, setServiceErrMsg] = useState("");
   async function signInRequest() {
-    if (errorList.isPwdError || errorList.isUserNameError) {
+    let isError = false;
+    if (errorList.isPwdError) {
       setErrorList({
         ...errorList,
         isPwdError: true,
         pwdErrorMsg: "Password should not be empty.",
       });
+      isError = true;
+    }
+    if (errorList.isUserNameError) {
       setErrorList({
         ...errorList,
         isUserNameError: true,
         userNameErrorMsg: "User name should not be empty.",
       });
+      isError = true;
+    }
+    // Should not proceed if found any input value error
+    if (isError) {
       return;
     }
     const headers = getCommonHeaders();

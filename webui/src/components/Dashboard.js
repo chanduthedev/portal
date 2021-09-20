@@ -4,13 +4,15 @@ import DeleteRecipe from "./DeleteRecipe";
 import UpdateRecipe from "./UpdateRecipe";
 import ViewRecipe from "./ViewRecipe";
 import SignIn from "./SignIn";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserName, getAccessToken } from "../actions";
 
 function Dashboard() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [selectedType, setSelectedType] = useState("");
+  const singInData = useSelector((state) => state.login);
   const getRecipeComp = (inputType) => {
     console.log(inputType);
     setSelectedType(inputType);
@@ -28,6 +30,12 @@ function Dashboard() {
       return <SignIn />;
     }
   };
+
+  // if (!singInData.accessToken) {
+  //   history.push("/");
+  //   return;
+  // }
+
   return (
     <div>
       <nav className="text-center  bg-gray-100 py-2">

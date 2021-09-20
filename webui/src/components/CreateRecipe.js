@@ -12,21 +12,26 @@ import { getCommonHeaders } from "../utils/common";
 
 function CreateRecipe() {
   const dispatch = useDispatch();
-  const recipeData = useSelector((state) => state.recipe);
+  // const recipeData = useSelector((state) => state.recipe);
   const singInData = useSelector((state) => state.login);
+  const [recipeTitle, setRecipeTitle] = useState("");
+  const [ingredients, setIngredients] = useState([]);
   const [ingradientName, setIngradientName] = useState("");
   const [ingradientAmount, setIngradientAmount] = useState("");
-  const [stepNum, setStepNum] = useState(0);
+  const [stepNum, setStepNum] = useState(1);
   const [stepDesc, setStepDesc] = useState("");
+  const [instructions, setInstructions] = useState([]);
+  const [recipeImage, setRecipeImage] = useState("");
   const [images, setImages] = useState([]);
   const [responseCode, setResponseCode] = useState(0);
   const [errMessage, setErrMessage] = useState("");
+  const [titleErrMsg, setTitleErrMsg] = useState("");
 
   const maxNumber = 1;
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
     if (imageList.length && imageList[0].data_url) {
-      dispatch(getRecipeImage(imageList[0].data_url));
+      setRecipeImage(imageList[0].data_url);
     }
     console.log(addUpdateIndex);
     setImages(imageList);
@@ -38,10 +43,10 @@ function CreateRecipe() {
 
     const body = {};
     body["userName"] = singInData.userName;
-    body["title"] = recipeData.title;
-    body["ingredients"] = recipeData.ingredients;
-    body["instructions"] = recipeData.instructions;
-    body["image"] = recipeData.image;
+    body["title"] = recipeTitle;
+    body["ingredients"] = ingredients;
+    body["instructions"] = instructions;
+    body["image"] = recipeImage;
     const respData = await createRecipeService(body, headers);
     setResponseCode(respData.code);
     setErrMessage(respData.message);
@@ -49,24 +54,30 @@ function CreateRecipe() {
 
   return (
     <div className="p-3">
-      <div className="flex justify-between p-3">
+      <div className="flex justify p-2">
         <label htmlFor="recipeName" className="text-blue-900 font-sans text-xl">
           Recipe Name :
         </label>
-        <input
-          type="text"
-          className=" border-2 border-gray-200 w-8/12 h-7 px-2 text-xl font-light"
-          aria-label="recipeTitle"
-          onChange={(e) => {
-            dispatch(getRecipeTitle(e.target.value));
-          }}
-        />
+        <div className="w-7/12">
+          <input
+            type="text"
+            className=" border-2 border-gray-200 w-full h-7 px-2 text-xl font-light"
+            onChange={(e) => {
+              if (e.target.value.length > 5) {
+                // setRecipeName(e.target.value);
+                setTitleErrMsg("");
+              } else {
+                setTitleErrMsg("Recipe title should be atleast 5 letters.");
+              }
+              setRecipeTitle(e.target.value);
+            }}
+          />
+          <label htmlFor="" className="text-red-500 text-smz">
+            {titleErrMsg}
+          </label>
+        </div>
       </div>
-      <div className=" p-3">
-        <label htmlFor="errMsg" className="text-red-800 font-sans text-xl w-28">
-          {errMessage}
-        </label>
-      </div>
+
       <div className=" p-3">
         <label
           htmlFor="ingredients"
@@ -74,10 +85,10 @@ function CreateRecipe() {
         >
           Ingredients :
         </label>
-        {recipeData.ingredients.map((inradient, id) => (
+        {ingredients.map((inradient, id) => (
           <lo key={id}>
             <br></br>
-            {inradient.name}:{inradient.amount}
+            {id + 1}.{inradient.name} - {inradient.amount}
           </lo>
         ))}
         <div className="flex justify-between mt-2">
@@ -112,13 +123,17 @@ function CreateRecipe() {
             className="bg-green-500 text-white px-3 py-1 rounded"
             onClick={() => {
               // console.log("Ingredient on click");
-              var ingradientObj = {
-                name: ingradientName,
-                amount: ingradientAmount,
-              };
-              dispatch(getIngradient(ingradientObj));
-              setIngradientName("");
-              setIngradientAmount("");
+              if (ingradientName && ingradientName) {
+                var ingradientObj = {
+                  name: ingradientName,
+                  amount: ingradientAmount,
+                };
+                // dispatch(getIngradient(ingradientObj));
+                const existingArray = [...ingredients, ingradientObj];
+                setIngredients(existingArray);
+                setIngradientName("");
+                setIngradientAmount("");
+              }
             }}
           >
             Add Ingradient
@@ -132,10 +147,10 @@ function CreateRecipe() {
         >
           Instructions :
         </label>
-        {recipeData.instructions.map((instruction, id) => (
+        {instructions.map((instruction, id) => (
           <lo key={id}>
             <br></br>
-            {instruction.stepNo}:{instruction.stepDesc}
+            Step {instruction.stepNo}. {instruction.stepDesc}
           </lo>
         ))}
         <div className="flex justify-between mt-2">
@@ -148,9 +163,6 @@ function CreateRecipe() {
           <input
             type="text"
             className=" border-2 border-gray-200 w-3/12 h-7 px-2 text-xl font-light ml-2"
-            onChange={(e) => {
-              setStepNum(e.target.value);
-            }}
           />
           <label
             htmlFor="description"
@@ -168,16 +180,19 @@ function CreateRecipe() {
           <button
             className="bg-green-500 text-white px-3 py-1 rounded"
             onClick={() => {
-              var instructionObj = {
-                stepNo: stepNum,
-                stepDesc: stepDesc,
-              };
-              dispatch(getInstruction(stepDesc));
-              setStepNum("");
-              setStepDesc("");
+              if (stepDesc) {
+                var instructionObj = {
+                  stepNo: stepNum,
+                  stepDesc: stepDesc,
+                };
+                const existingArray = [...instructions, instructionObj];
+                setInstructions(existingArray);
+                setStepNum(stepNum + parseInt(1));
+                setStepDesc("");
+              }
             }}
           >
-            Add/Update
+            Add Instruction
           </button>
         </div>
       </div>
@@ -251,14 +266,16 @@ function CreateRecipe() {
         <button
           className="bg-green-600 text-white px-10 py-1 rounded"
           onClick={() => {
-            // alert("Hello");
-            // console.log(recipeData);
-            // console.log("signInState");
             createRecipeRequest();
           }}
         >
           Create Recipe app
         </button>
+      </div>
+      <div className="mt-5 flex justify-center ">
+        <label htmlFor="errMessage" className="text-red-500 font-sans text-xl">
+          {errMessage}
+        </label>
       </div>
     </div>
   );
