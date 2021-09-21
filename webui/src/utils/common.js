@@ -2,7 +2,6 @@ import { configuration } from "../appConfig";
 
 function getUrl(apiName) {
   const host = configuration.appServer.host;
-  const port = configuration.appServer.port;
   let endPoint = "";
   if (apiName === "login") {
     endPoint = configuration.api.user.login;
@@ -18,7 +17,7 @@ function getUrl(apiName) {
     endPoint = configuration.api.recipe.delete;
   }
 
-  return `${host}:${port}${endPoint}`;
+  return `${host}${endPoint}`;
 }
 
 function getCommonHeaders() {

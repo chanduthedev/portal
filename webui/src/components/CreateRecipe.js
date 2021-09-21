@@ -103,7 +103,7 @@ function CreateRecipe() {
 
           <input
             type="number"
-            // step="any"
+            step="any"
             inputMode="decimal"
             placeholder="Only numeric values"
             pattern="\d*"

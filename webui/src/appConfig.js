@@ -5,7 +5,7 @@
 
 module.exports = {
   configuration: {
-    appServer: { host: "http://localhost", port: 7788 },
+    appServer: { host: "https://chrecipeserver.herokuapp.com" },
     api: {
       user: {
         register: "/user/register",
