@@ -24,3 +24,17 @@ Your task is to build a vegan recipe app to create and view recipes. You should 
 ## High Level Architecture
 
 ![](images/high-level-architecture.png)
+
+## How to start Server:
+
+Make sure that Mongo DB database is up and running
+
+1. Navigate to the `server` folder from the project root folder `recipe_app`
+2. Run `npm install` to install all dependencies
+3. Run `npm run server.js` to start the server
+
+## How to start Web App:
+
+1. Navigate to the `webui` folder from the project root folder `recipe_app`
+2. Run `npm install` to install all dependencies
+3. Run `npm start` to start Web App server
