@@ -8,10 +8,8 @@
   },
   "scripts": {
     "devStart": "nodemon server.js",
-    "start": "npm run server.js",
-    "test": "mocha 'tests/completeTest.js' --timeout 1000",
-    "heroku-postbuild": "npm run build",
-    "build": "npm run build"
+    "start": "node server.js",
+    "test": "mocha 'tests/completeTest.js' --timeout 1000"
   },
   "repository": {
     "type": "git",
