@@ -23,9 +23,9 @@ async function process(req, res) {
     user_name: req.body.userName,
     email: req.body.email,
     title: req.body.title,
-    image: req.body.image,
-    ingredients: req.body.ingredients,
-    instructions: req.body.instructions,
+    type: req.body.type,
+    cuisine: req.body.cuisine,
+    description: req.body.description,
     created_timestamp: new Date().toISOString().replace(/T/, " "),
   });
   try {
@@ -41,9 +41,9 @@ async function process(req, res) {
     const newRecipe = await recipe.save();
     let respData = {};
     respData["title"] = newRecipe.title;
-    respData["image"] = newRecipe.image;
-    respData["ingredients"] = newRecipe.ingredients;
-    respData["instructions"] = newRecipe.instructions;
+    respData["type"] = newRecipe.type;
+    respData["cuisine"] = newRecipe.cuisine;
+    respData["description"] = newRecipe.description;
     if (newRecipe) {
       return res.status(201).json({
         data: respData,

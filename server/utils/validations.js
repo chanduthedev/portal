@@ -316,14 +316,14 @@ function validateCreateRecipeRequestBody(requestBody) {
     //   return checkImage;
     // }
 
-    const checkIngradients = validateIngredients(requestBody.ingredients);
-    if (checkIngradients["status"] !== commonErrorCodes.SUCCESS.status) {
-      return checkIngradients;
-    }
-    const checkInstructions = validateInstructions(requestBody.instructions);
-    if (checkInstructions["status"] !== commonErrorCodes.SUCCESS.status) {
-      return checkInstructions;
-    }
+    // const checkIngradients = validateIngredients(requestBody.ingredients);
+    // if (checkIngradients["status"] !== commonErrorCodes.SUCCESS.status) {
+    //   return checkIngradients;
+    // }
+    // const checkInstructions = validateInstructions(requestBody.instructions);
+    // if (checkInstructions["status"] !== commonErrorCodes.SUCCESS.status) {
+    //   return checkInstructions;
+    // }
     return commonErrorCodes.SUCCESS;
   } catch (e) {
     console.log(e);

@@ -23,9 +23,9 @@ async function process(req, res) {
     let recipeDetails = await Recipe.findOne({ title: inputTitle });
     if (recipeDetails) {
       let recipeDetailsToUpdate = {};
-      const inputImage = req.body.image;
-      if (inputImage) {
-        recipeDetailsToUpdate.image = inputImage;
+      const inputType = req.body.type;
+      if (inputType) {
+        recipeDetailsToUpdate.type = inputType;
         // const result = validations.validateImage(inputImage);
         // if (result["status"] !== commonErrCodes.SUCCESS.status) {
         //   return res.status(result["status"]).json({
@@ -35,36 +35,15 @@ async function process(req, res) {
         // }
       }
 
-      const inputIngradients = req.body.ingredients;
-      if (inputIngradients) {
-        const result = validations.validateIngredients(inputIngradients);
-        if (result["status"] !== commonErrCodes.SUCCESS.status) {
-          return res.status(result["status"]).json({
-            code: result["code"],
-            message: result["message"],
-          });
-        }
+      const inputCuisine = req.body.cuisine;
+      if (inputCuisine) {
         // Appending new ingradients to existing ingradients
-        recipeDetailsToUpdate.ingredients = [
-          ...recipeDetails.ingredients,
-          ...inputIngradients,
-        ];
+        recipeDetailsToUpdate.cuisine = inputCuisine;
       }
 
-      const inputInstructions = req.body.instructions;
-      if (inputInstructions) {
-        const result = validations.validateInstructions(inputInstructions);
-        if (result["status"] !== commonErrCodes.SUCCESS.status) {
-          return res.status(result["status"]).json({
-            code: result["code"],
-            message: result["message"],
-          });
-        }
-        // Appending new instructions to existing instructions
-        recipeDetailsToUpdate.instructions = [
-          ...recipeDetails.instructions,
-          ...inputInstructions,
-        ];
+      const inputDescription = req.body.description;
+      if (inputDescription) {
+        recipeDetailsToUpdate.description = inputDescription;
       }
       recipeDetailsToUpdate.updated_timestamp = new Date().toISOString();
 
@@ -76,9 +55,9 @@ async function process(req, res) {
 
       let respData = {};
       respData["title"] = updatedRecipeDetails.title;
-      respData["image"] = updatedRecipeDetails.image;
-      respData["ingredients"] = updatedRecipeDetails.ingredients;
-      respData["instructions"] = updatedRecipeDetails.instructions;
+      respData["type"] = updatedRecipeDetails.type;
+      respData["cuisine"] = updatedRecipeDetails.cuisine;
+      respData["description"] = updatedRecipeDetails.description;
       return res.status(200).json({
         data: respData,
         code: commonResponseCodes.RECIPE_DETAILS_UPDATED.code,

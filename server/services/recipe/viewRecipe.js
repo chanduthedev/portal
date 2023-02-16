@@ -26,9 +26,9 @@ async function process(req, res) {
     if (recipeDetails) {
       let respData = {};
       respData["title"] = recipeDetails.title;
-      respData["image"] = recipeDetails.image;
-      respData["ingredients"] = recipeDetails.ingredients;
-      respData["instructions"] = recipeDetails.instructions;
+      respData["type"] = recipeDetails.type;
+      respData["cuisine"] = recipeDetails.cuisine;
+      respData["description"] = recipeDetails.description;
       return res.status(200).json({
         data: respData,
         code: commonResponseCodes.RECIPE_DETAILS_FOUND.code,

@@ -8,9 +8,9 @@ const recipeSchema = new mongoose.Schema({
   user_name: { type: String, required: true },
   email: { type: String },
   title: { type: String, required: true },
-  image: { type: String, required: true },
-  ingredients: { type: Array, default: [], required: true },
-  instructions: { type: Array, default: [], required: true },
+  type: { type: String, required: true },
+  cuisine: { type: String, required: true },
+  description: { type: String, required: true },
   created_timestamp: { type: Date },
   updated_timestamp: { type: Date },
 });
