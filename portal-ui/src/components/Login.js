@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import useToken from "./useToken";
-import { setToken } from "./Token";
+import { setToken, setEmail, setUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
@@ -30,7 +30,9 @@ export default function Login() {
     console.log("Token:", response["data"]["accessToken"]);
     const token = {};
     token["token"] = response["data"]["accessToken"];
-    setToken(token);
+    setToken(response["data"]["accessToken"]);
+    setEmail(response["data"]["email"]);
+    setUserId(response["data"]["userName"]);
     navigate("/dashboard");
   };
 
