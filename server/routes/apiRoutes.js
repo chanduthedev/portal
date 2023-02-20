@@ -35,6 +35,13 @@ function apiRoutes(app) {
     );
 
   app
+    .route("/:userName/recipes")
+    .get(
+      validations.validateToken,
+      validations.allowIfLoggedin,
+      require("../services/recipe/viewRecipes").process
+    );
+  app
     .route("/recipe/:title")
     .get(
       validations.validateToken,
