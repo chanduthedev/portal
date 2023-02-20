@@ -17,7 +17,7 @@ function App() {
   // }
   return (
     <div className="wrapper" align="center">
-      <h1>Application</h1>
+      <h1>Recipe Application</h1>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<PreLogin />}></Route>

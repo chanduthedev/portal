@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
   console.log("credentials: ", JSON.stringify(credentials));
-  return fetch("http://localhost:7788/user/login", {
+  return fetch("http://localhost:7788/user/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,29 +19,10 @@ export default function SignUp() {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
-  const [serviceErrMsg, setServiceErrMsg] = useState("");
-  const [errorList, setErrorList] = useState({
-    isUserNameError: true,
-    userNameErrorMsg: "",
-    isEmailError: true,
-    emailErrorMsg: "",
-    isPwdError: true,
-    pwdErrorMsg: "",
-    isConfirmPwdError: true,
-    confirmErrorMsg: "",
-  });
   // const [token, setToken] = useState();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    if (
-      errorList.isUserNameError ||
-      errorList.isEmailError ||
-      errorList.isPwdError ||
-      errorList.isConfirmPwdError
-    ) {
-      return;
-    }
     e.preventDefault();
     const response = await loginUser({
       userName,
@@ -50,11 +31,12 @@ export default function SignUp() {
     });
     console.log("response: ", JSON.stringify(response));
     if (!response.data) {
-      setServiceErrMsg(response.message);
+      console.log("error response:", response);
+      return;
     } else {
       navigate("/login");
     }
-    navigate("/login");
+    // navigate("/login");
   };
   return (
     <div align="center">
@@ -76,19 +58,6 @@ export default function SignUp() {
           <input
             type="text"
             onChange={(e) => {
-              if (validator.isEmail(e.target.value)) {
-                setErrorList({
-                  ...errorList,
-                  isEmailError: false,
-                  emailErrorMsg: "",
-                });
-              } else {
-                setErrorList({
-                  ...errorList,
-                  isEmailError: true,
-                  emailErrorMsg: "Not a valid email format.",
-                });
-              }
               setEmail(e.target.value);
             }}
           />

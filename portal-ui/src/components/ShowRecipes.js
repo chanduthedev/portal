@@ -1,29 +1,66 @@
 import React from "react";
 import Dashboard from "./Dashboard";
-import { getToken } from "./Token";
+import { getToken, getUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
 
+async function GetRecipes(RequestBody) {
+  console.log("recipeDetails: ", JSON.stringify(RequestBody));
+  const username = getUserId().replace(/['"]+/g, "");
+  const accessToken = JSON.parse(getToken());
+  const uri = "http://localhost:7788/" + username + "/recipes";
+  console.log("uri:", uri);
+  return fetch(uri, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": accessToken,
+    },
+  }).then((data) => data.json());
+}
+
 export default function ShowRecipes() {
-  const initState = [
-    { id: 1, name: "bread", quantitiy: 50, location: "cupboard" },
-    { id: 2, name: "milk", quantitiy: 20, location: "fridge" },
-    { id: 3, name: "water", quantitiy: 10, location: "fridge" },
-  ];
+  const initState = [];
+
   const [state, setState] = React.useState(initState);
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    const userName = getUserId();
+
+    e.preventDefault();
+    const response = await GetRecipes({
+      userName,
+    });
+    console.log(response["data"]);
+    setState(response["data"]);
+  };
+  const showDashboard = async (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
+  };
   return (
-    <table>
-      <tr key={"header"}>
-        {Object.keys(state[0]).map((key) => (
-          <th>{key}</th>
-        ))}
-      </tr>
-      {state.map((item) => (
-        <tr key={item.id}>
-          {Object.values(item).map((val) => (
-            <td>{val}</td>
-          ))}
+    <div>
+      <table>
+        <tr>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Cuisine</th>
+          <th>Created Date</th>
         </tr>
-      ))}
-    </table>
+        {state.map((val, key) => {
+          return (
+            <tr key={key}>
+              <td>{val.title}</td>
+              <td>{val.type}</td>
+              <td>{val.cuisine}</td>
+              <td>{val.created_timestamp}</td>
+            </tr>
+          );
+        })}
+      </table>
+
+      <button onClick={handleSubmit}>Show Recipes</button>
+      <button onClick={showDashboard}>Dashboard</button>
+    </div>
   );
 }
