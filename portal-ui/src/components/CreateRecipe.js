@@ -30,8 +30,8 @@ export default function CreateRecipe() {
 
   const handleSubmit = async (e) => {
     console.log({ title, type, cuisine, description });
-    const email = getEmail();
-    const userName = getUserId();
+    const email = getEmail().replace(/['"]+/g, "");
+    const userName = getUserId().replace(/['"]+/g, "");
 
     e.preventDefault();
     const response = await NewRecipe({
