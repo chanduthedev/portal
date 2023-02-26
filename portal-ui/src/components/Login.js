@@ -20,6 +20,11 @@ export default function Login() {
   // const [token, setToken] = useState();
   const navigate = useNavigate();
 
+  const Register = (e) => {
+    e.preventDefault();
+    navigate("/register");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await loginUser({
@@ -52,9 +57,12 @@ export default function Login() {
           />
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit">Login</button>
         </div>
       </form>
+      <div>
+          <button type="submit" onClick={Register}>Register</button>
+        </div>
     </div>
   );
 }

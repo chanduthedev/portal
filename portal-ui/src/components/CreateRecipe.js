@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { getToken, getEmail, getUserId } from "./Token";
+import { getToken, getEmail, getUserId, deleteEmail, deleteToken, deleteUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 
@@ -52,6 +52,19 @@ export default function CreateRecipe() {
   const updateType = (event) => {
     setType(event.target.value);
   };
+
+  const LogOut = (e) => {
+    e.preventDefault();
+    deleteToken();
+    deleteEmail();
+    deleteUserId();
+    navigate("/login");
+  };
+  const ShowDashboard = (e) => {
+    e.preventDefault();
+    navigate("/dashboard");
+  };
+
   return (
     <div align="center">
       <h3>Create new recipe</h3>
@@ -80,6 +93,14 @@ export default function CreateRecipe() {
           <button type="submit">Submit</button>
         </div>
       </form>
+      <div>
+      <button type="submit" onClick={ShowDashboard}>
+        Dashboard
+      </button>
+      <button type="submit" onClick={LogOut}>
+        LogOut
+      </button>
+    </div>
     </div>
   );
 }

@@ -42,32 +42,30 @@ export default function SignUp() {
     <div align="center">
       <h3>Please Log In</h3>
       <form onSubmit={handleSubmit}>
-        <label>
-          <p>Username</p>
+        
           <input
-            type="text"
+            type="text" placeholder=" Enter user name"
             onChange={(e) => {
               setUserName(e.target.value);
               // console.log("username:", userName);
             }}
           />
-        </label>
-        <label>
-          <p>Password</p>
+          <br/>
+          <br/>
+        
           <input
-            type="password"
+            type="password" placeholder=" Enter password"
             onChange={(e) => setPassword(e.target.value)}
           />
-        </label>
-        <label>
-          <p>email</p>
+                 <br/>
+                 <br/>
           <input
-            type="text"
+            type="text" placeholder=" Enter email address"
             onChange={(e) => {
               setEmail(e.target.value);
             }}
           />
-        </label>
+        
         <div>
           <button type="submit">Submit</button>
         </div>

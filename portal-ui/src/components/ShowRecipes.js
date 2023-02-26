@@ -1,6 +1,7 @@
 import React from "react";
 import Dashboard from "./Dashboard";
-import { getToken, getUserId } from "./Token";
+// import Login from "./Login";
+import { getToken, getUserId, deleteEmail, deleteToken, deleteUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
 
 async function GetRecipes(RequestBody) {
@@ -38,6 +39,13 @@ export default function ShowRecipes() {
     e.preventDefault();
     navigate("/dashboard");
   };
+  const LogOut = (e) => {
+    e.preventDefault();
+    deleteToken();
+    deleteEmail();
+    deleteUserId();
+    navigate("/login");
+  };
   return (
     <div>
       <table>
@@ -61,6 +69,7 @@ export default function ShowRecipes() {
 
       <button onClick={handleSubmit}>Show Recipes</button>
       <button onClick={showDashboard}>Dashboard</button>
+      <button onClick={LogOut}>Log Out</button>
     </div>
   );
 }

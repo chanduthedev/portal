@@ -2,6 +2,7 @@ import React from "react";
 import { deleteToken, deleteEmail, deleteUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
 import { getToken, getUserId } from "./Token";
+import Login from "./Login";
 
 async function GetRecipes(RequestBody) {
   console.log("recipeDetails: ", JSON.stringify(RequestBody));
@@ -24,6 +25,11 @@ export default function Dashboard() {
   ];
   const navigate = useNavigate();
   const [data, setData] = React.useState(initState);
+
+  const token = getToken();
+  if (!token) {
+    return <Login />;
+  }
 
   const LogOut = (e) => {
     e.preventDefault();
