@@ -19,6 +19,11 @@ async function GetRecipes(RequestBody) {
   }).then((data) => data.json());
 }
 
+function getDate(timeStamp_date){
+  const date= new Date(timeStamp_date);
+  return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+}
+
 export default function ShowRecipes() {
   const initState = [];
 
@@ -35,6 +40,7 @@ export default function ShowRecipes() {
     console.log(response["data"]);
     setState(response["data"]);
   };
+  
   const showDashboard = async (e) => {
     e.preventDefault();
     navigate("/dashboard");
@@ -53,7 +59,7 @@ export default function ShowRecipes() {
           <th>Title</th>
           <th>Type</th>
           <th>Cuisine</th>
-          <th>Created Date</th>
+          <th>Created On</th>
         </tr>
         {state.map((val, key) => {
           return (
@@ -61,7 +67,10 @@ export default function ShowRecipes() {
               <td>{val.title}</td>
               <td>{val.type}</td>
               <td>{val.cuisine}</td>
-              <td>{val.created_timestamp}</td>
+              <td>{
+                
+                getDate(val.created_timestamp)
+               }</td>
             </tr>
           );
         })}

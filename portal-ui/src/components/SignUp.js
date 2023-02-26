@@ -22,6 +22,11 @@ export default function SignUp() {
   // const [token, setToken] = useState();
   const navigate = useNavigate();
 
+  const PreLogin = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await loginUser({
@@ -70,6 +75,9 @@ export default function SignUp() {
           <button type="submit">Submit</button>
         </div>
       </form>
+      <div>
+          <button type="submit" onClick={PreLogin}>Home</button>
+        </div>
     </div>
   );
 }
