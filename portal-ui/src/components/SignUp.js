@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 // import useToken from "./useToken";
-import validator from "validator";
-import { setToken } from "./Token";
 import { useNavigate } from "react-router-dom";
 import "./../App.css";
 
@@ -20,7 +18,6 @@ export default function SignUp() {
   const [userName, setUserName] = useState();
   const [password, setPassword] = useState();
   const [email, setEmail] = useState();
-  // const [token, setToken] = useState();
   const navigate = useNavigate();
 
   const PreLogin = (e) => {
@@ -42,7 +39,6 @@ export default function SignUp() {
     } else {
       navigate("/login");
     }
-    // navigate("/login");
   };
   return (
     <div align="center">
@@ -53,7 +49,6 @@ export default function SignUp() {
           placeholder=" Enter user name"
           onChange={(e) => {
             setUserName(e.target.value);
-            // console.log("username:", userName);
           }}
         />
         <br />

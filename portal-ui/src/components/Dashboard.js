@@ -5,27 +5,8 @@ import { getToken } from "./Token";
 import Login from "./Login";
 import "./../App.css";
 
-async function GetRecipes(RequestBody) {
-  console.log("recipeDetails: ", JSON.stringify(RequestBody));
-  const accessToken = JSON.parse(getToken());
-  return fetch("http://localhost:7788/recipes", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "x-access-token": accessToken,
-    },
-    body: JSON.stringify(RequestBody),
-  }).then((data) => data.json());
-}
-
 export default function Dashboard() {
-  const initState = [
-    { id: 1, name: "bread", quantitiy: 50, location: "cupboard" },
-    { id: 2, name: "milk", quantitiy: 20, location: "fridge" },
-    { id: 3, name: "water", quantitiy: 10, location: "fridge" },
-  ];
   const navigate = useNavigate();
-  const [data, setData] = React.useState(initState);
 
   const token = getToken();
   if (!token) {
@@ -46,18 +27,6 @@ export default function Dashboard() {
   const ShowRecipes = (e) => {
     e.preventDefault();
     navigate("/recipes");
-
-    // const handleSubmit = async (e) => {
-    //   const userName = getUserId();
-
-    //   e.preventDefault();
-    //   const response = await GetRecipes({
-    //     userName,
-    //   });
-    //   console.log("response: ", JSON.stringify(response));
-    //   setData(response["data"]);
-    //   // navigate("/dashboard");
-    // };
   };
   return (
     <div>
