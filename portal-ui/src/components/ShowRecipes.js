@@ -1,8 +1,15 @@
 import React from "react";
 import Dashboard from "./Dashboard";
 // import Login from "./Login";
-import { getToken, getUserId, deleteEmail, deleteToken, deleteUserId } from "./Token";
+import {
+  getToken,
+  getUserId,
+  deleteEmail,
+  deleteToken,
+  deleteUserId,
+} from "./Token";
 import { useNavigate } from "react-router-dom";
+import "./../App.css";
 
 async function GetRecipes(RequestBody) {
   console.log("recipeDetails: ", JSON.stringify(RequestBody));
@@ -19,9 +26,9 @@ async function GetRecipes(RequestBody) {
   }).then((data) => data.json());
 }
 
-function getDate(timeStamp_date){
-  const date= new Date(timeStamp_date);
-  return date.getHours() + ":" + date.getMinutes() + ", "+ date.toDateString();
+function getDate(timeStamp_date) {
+  const date = new Date(timeStamp_date);
+  return date.getHours() + ":" + date.getMinutes() + ", " + date.toDateString();
 }
 
 export default function ShowRecipes() {
@@ -40,7 +47,7 @@ export default function ShowRecipes() {
     console.log(response["data"]);
     setState(response["data"]);
   };
-  
+
   const showDashboard = async (e) => {
     e.preventDefault();
     navigate("/dashboard");
@@ -67,18 +74,21 @@ export default function ShowRecipes() {
               <td>{val.title}</td>
               <td>{val.type}</td>
               <td>{val.cuisine}</td>
-              <td>{
-                
-                getDate(val.created_timestamp)
-               }</td>
+              <td>{getDate(val.created_timestamp)}</td>
             </tr>
           );
         })}
       </table>
 
-      <button onClick={handleSubmit}>Show Recipes</button>
-      <button onClick={showDashboard}>Dashboard</button>
-      <button onClick={LogOut}>Log Out</button>
+      <button class="button button3" onClick={handleSubmit}>
+        Show Recipes
+      </button>
+      <button class="button button3" onClick={showDashboard}>
+        Dashboard
+      </button>
+      <button class="button button3" onClick={LogOut}>
+        Log Out
+      </button>
     </div>
   );
 }

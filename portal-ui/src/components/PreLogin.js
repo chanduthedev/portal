@@ -2,6 +2,7 @@ import React from "react";
 import Dashboard from "./Dashboard";
 import { getToken } from "./Token";
 import { useNavigate } from "react-router-dom";
+import "./../App.css";
 
 export default function Prelogin() {
   const navigate = useNavigate();
@@ -21,11 +22,11 @@ export default function Prelogin() {
   };
   return (
     <div>
-      <button type="submit" onClick={LogIn}>
+      <button class="button" type="submit" onClick={LogIn}>
         Login
       </button>
       <br />
-      <button type="submit" onClick={Register}>
+      <button class="button" type="submit" onClick={Register}>
         Register
       </button>
     </div>

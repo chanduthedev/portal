@@ -1,7 +1,15 @@
 import React, { useState } from "react";
-import { getToken, getEmail, getUserId, deleteEmail, deleteToken, deleteUserId } from "./Token";
+import {
+  getToken,
+  getEmail,
+  getUserId,
+  deleteEmail,
+  deleteToken,
+  deleteUserId,
+} from "./Token";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
+import "./../App.css";
 
 async function NewRecipe(recipeDetails) {
   console.log("recipeDetails: ", JSON.stringify(recipeDetails));
@@ -90,17 +98,19 @@ export default function CreateRecipe() {
           </select>
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button class="button btn-5" type="submit">
+            create
+          </button>
         </div>
       </form>
       <div>
-      <button type="submit" onClick={ShowDashboard}>
-        Dashboard
-      </button>
-      <button type="submit" onClick={LogOut}>
-        LogOut
-      </button>
-    </div>
+        <button class="button btn-4" type="submit" onClick={ShowDashboard}>
+          Dashboard
+        </button>
+        <button class="button btn-4" type="submit" onClick={LogOut}>
+          LogOut
+        </button>
+      </div>
     </div>
   );
 }

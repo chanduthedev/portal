@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import validator from "validator";
 import { setToken } from "./Token";
 import { useNavigate } from "react-router-dom";
+import "./../App.css";
 
 async function loginUser(credentials) {
   console.log("credentials: ", JSON.stringify(credentials));
@@ -47,37 +48,43 @@ export default function SignUp() {
     <div align="center">
       <h3>Please Log In</h3>
       <form onSubmit={handleSubmit}>
-        
-          <input
-            type="text" placeholder=" Enter user name"
-            onChange={(e) => {
-              setUserName(e.target.value);
-              // console.log("username:", userName);
-            }}
-          />
-          <br/>
-          <br/>
-        
-          <input
-            type="password" placeholder=" Enter password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-                 <br/>
-                 <br/>
-          <input
-            type="text" placeholder=" Enter email address"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        
+        <input
+          type="text"
+          placeholder=" Enter user name"
+          onChange={(e) => {
+            setUserName(e.target.value);
+            // console.log("username:", userName);
+          }}
+        />
+        <br />
+        <br />
+
+        <input
+          type="password"
+          placeholder=" Enter password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <br />
+        <br />
+        <input
+          type="text"
+          placeholder=" Enter email address"
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+        />
+
         <div>
-          <button type="submit">Submit</button>
+          <button class="button" type="submit">
+            Submit
+          </button>
         </div>
       </form>
       <div>
-          <button type="submit" onClick={PreLogin}>Home</button>
-        </div>
+        <button class="button" type="submit" onClick={PreLogin}>
+          Home
+        </button>
+      </div>
     </div>
   );
 }

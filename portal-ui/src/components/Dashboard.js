@@ -1,8 +1,9 @@
 import React from "react";
 import { deleteToken, deleteEmail, deleteUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
-import { getToken, getUserId } from "./Token";
+import { getToken } from "./Token";
 import Login from "./Login";
+import "./../App.css";
 
 async function GetRecipes(RequestBody) {
   console.log("recipeDetails: ", JSON.stringify(RequestBody));
@@ -61,15 +62,15 @@ export default function Dashboard() {
   return (
     <div>
       <h2>Dashboard</h2>
-      <button type="submit" onClick={CreateRecipePage}>
+      <button class="button button3" type="submit" onClick={CreateRecipePage}>
         Create Recipe
       </button>
       <br />
-      <button type="submit" onClick={ShowRecipes}>
+      <button class="button button3" type="submit" onClick={ShowRecipes}>
         Show recipes
       </button>
       <br />
-      <button type="submit" onClick={LogOut}>
+      <button class="button button3" type="submit" onClick={LogOut}>
         LogOut
       </button>
     </div>

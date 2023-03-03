@@ -2,6 +2,7 @@ import React, { useState } from "react";
 // import useToken from "./useToken";
 import { setToken, setEmail, setUserId } from "./Token";
 import { useNavigate } from "react-router-dom";
+import "./../App.css";
 
 async function loginUser(credentials) {
   console.log("credentials: ", JSON.stringify(credentials));
@@ -19,6 +20,11 @@ export default function Login() {
   const [password, setPassword] = useState();
   // const [token, setToken] = useState();
   const navigate = useNavigate();
+
+  const Home = (e) => {
+    e.preventDefault();
+    navigate("/");
+  };
 
   const Register = (e) => {
     e.preventDefault();
@@ -57,12 +63,19 @@ export default function Login() {
           />
         </label>
         <div>
-          <button type="submit">Login</button>
+          <button class="button" type="submit">
+            Login
+          </button>
         </div>
       </form>
       <div>
-          <button type="submit" onClick={Register}>Register</button>
-        </div>
+        <button class="button" type="submit" onClick={Register}>
+          Register
+        </button>
+      </div>
+      <button class="button button2" type="submit" onClick={Home}>
+        Home
+      </button>
     </div>
   );
 }
