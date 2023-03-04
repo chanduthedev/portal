@@ -1,40 +1,32 @@
-## Vegan recipes app
+## Recipe Web App
 
-Your task is to build a vegan recipe app to create and view recipes. You should use React or React Native in the frontend, and Node.js and MongoDB on the backend. Please add tests for the backend and frontend.
+This web app is a demo on implementing CRUD REST API'S and integration with front end using reactjs. Below are the functionality implementd in this app.
 
-### Features:
-
-- A user should be able to create, view, update and delete recipes.
-- Each recipe must have a title, image, list of ingredients and instructions.
-- Ingredients should exist as a combination of two fields - name and amount.
-- The instructions for the recipe should be divided into steps.
-
-### Bonus:
-
-- Add one extra feature to highlight your expertise: search, authentication, sharing recipes, or any other you can think of.
-- Make it visually appealing.
-- Make it available to test at a hosted domain (Heroku/Vercel/AWS/etc).
-
-### Limitations/Assumptions:
-
-- Recipe name should be a single word and unique(No duplicate recipe names allowed).
-- Updating ingredients only add at the end of the ingredient list
-- Updating instructions only add at the end of the instruction list
-
-## High Level Architecture
+- Create/Register a new user with user name, password and email(no validation as of now).
+- User login
+- Create a simple recipe with title, type and cuisine of the recipe.
+- Show list of all recipes created by a particular user
+- Implemented both
+  - frontend - react-js
+  - backend - NodeJS
+  - Database - MongoDB
 
 ![](images/high-level-architecture.png)
+
+## Prerequisites:
+
+- Make sure MongoDB is running before starting the server
 
 ## How to start Server:
 
 Make sure that Mongo DB database is up and running
 
-1. Navigate to the `server` folder from the project root folder `recipe_app`
+1. Navigate to the `server` folder from the project root folder `portal`
 2. Run `npm install` to install all dependencies
 3. Run `npm run server.js` to start the server
 
 ## How to start Web App:
 
-1. Navigate to the `webui` folder from the project root folder `recipe_app`
+1. Navigate to the `webui` folder from the project root folder `portal`
 2. Run `npm install` to install all dependencies
 3. Run `npm start` to start Web App server
