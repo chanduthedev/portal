@@ -78,26 +78,32 @@ export default function CreateRecipe() {
       <h3>Create new recipe</h3>
       <form onSubmit={handleSubmit}>
         <label>
-          <p>Recipe Title</p>
-          <input type="text" onChange={(e) => setTitle(e.target.value)} />
+          <input
+            type="text"
+            class="input"
+            placeholder="Recipe Title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </label>
         <label>
           <p>Recipe Type</p>
-          <select value={type} onChange={updateType}>
+          <select class="drop-down" value={type} onChange={updateType}>
             <option value="veg">Veg</option>
             <option value="non-veg">Non-Veg</option>
           </select>
         </label>
         <label>
           <p>Recipe Cuisine</p>
-          <select value={cuisine} onChange={handleCuisine}>
+          <select class="drop-down" value={cuisine} onChange={handleCuisine}>
             <option value="indian">Indian</option>
             <option value="chinese">Chinese</option>
             <option value="italian">Italian</option>
             <option value="japanese">Japanese</option>
           </select>
         </label>
+        <br />
         <div>
+          <br />
           <button class="button btn-5" type="submit">
             create
           </button>

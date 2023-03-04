@@ -46,6 +46,7 @@ export default function SignUp() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
+          class="input"
           placeholder=" Enter user name"
           onChange={(e) => {
             setUserName(e.target.value);
@@ -56,6 +57,7 @@ export default function SignUp() {
 
         <input
           type="password"
+          class="input"
           placeholder=" Enter password"
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -63,6 +65,7 @@ export default function SignUp() {
         <br />
         <input
           type="text"
+          class="input"
           placeholder=" Enter email address"
           onChange={(e) => {
             setEmail(e.target.value);
@@ -71,7 +74,7 @@ export default function SignUp() {
 
         <div>
           <button class="button" type="submit">
-            Submit
+            Register
           </button>
         </div>
       </form>

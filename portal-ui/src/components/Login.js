@@ -50,13 +50,19 @@ export default function Login() {
       <h3>Please Log In</h3>
       <form onSubmit={handleSubmit}>
         <label>
-          <p>Username</p>
-          <input type="text" onChange={(e) => setUserName(e.target.value)} />
+          <input
+            class="input"
+            type="text"
+            placeholder="Please enter username"
+            onChange={(e) => setUserName(e.target.value)}
+          />
         </label>
+        <br />
         <label>
-          <p>Password</p>
           <input
             type="password"
+            class="input"
+            placeholder="Please enter password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
