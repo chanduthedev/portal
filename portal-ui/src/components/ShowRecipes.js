@@ -7,6 +7,7 @@ import {
   deleteUserId,
 } from "./Token";
 import { useNavigate } from "react-router-dom";
+import Login from "./Login";
 import "./../App.css";
 
 async function GetRecipes(RequestBody) {
@@ -34,6 +35,10 @@ export default function ShowRecipes() {
 
   const [state, setState] = React.useState(initState);
   const navigate = useNavigate();
+  const token = getToken();
+  if (!token) {
+    return <Login />;
+  }
 
   const handleSubmit = async (e) => {
     const userName = getUserId();
