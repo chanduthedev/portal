@@ -20,6 +20,7 @@ require("dotenv").config({
 const app = express();
 app.use(cors());
 
+mongoose.set("strictQuery", true);
 const PORT = process.env.PORT || appConfig.appServer.port;
 const mongoDBUrl = process.env.MONGODB_CONNECTION_STRING;
 mongoose

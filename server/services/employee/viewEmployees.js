@@ -8,22 +8,15 @@
 const Employee = require("../../models/employes");
 const commonResponseCodes = require("../../responses/commonRespCodes");
 const commonErrCodes = require("../../responses/commonErrorCodes");
-const validations = require("../../utils/validations");
+const common = require("../../utils/common");
 
 async function process(req, res) {
   try {
-    // const inputEmail = req.params.userName;
-    // console.log("inputEmail:", inputEmail);
-    // const result = validations.validateUserName(inputEmail);
-    // if (result["status"] !== commonErrCodes.SUCCESS.status) {
-    //   return res.status(result["status"]).json({
-    //     code: result["code"],
-    //     message: result["message"],
-    //   });
-    // }
+    let filterParams = common.filterParamsFromQueryStr(req);
 
-    // let employeeDetails = await Employee.find({ user_name: inputEmail });
-    let employeeDetails = await Employee.find({}, { projection: { _id: 0 } });
+    let employeeDetails = await Employee.find(filterParams, {
+      projection: { _id: 0 },
+    });
 
     console.log("count:", employeeDetails.length);
 
