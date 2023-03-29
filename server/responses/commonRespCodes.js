@@ -73,6 +73,14 @@ module.exports = {
     code: 60008,
     message: "Recipe details found in the DB",
   },
+  EMPLOYEE_DETAILS_FOUND: {
+    code: 60010,
+    message: "Employee details found in the DB",
+  },
+  EMPLOYEE_NOT_FOUND: {
+    code: 60011,
+    message: "Employee details not found in the DB",
+  },
   UNKNOWN_ERROR: {
     code: 99999,
     message: "Unknown exception",

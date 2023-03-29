@@ -19,6 +19,15 @@ function apiRoutes(app) {
     .route("/user/register")
     .post(require("../services/user/userRegister").process);
 
+  // Employee API's
+  app
+    .route("/employee/register")
+    .post(require("../services/employee/register").process);
+
+  app
+    .route("/employees")
+    .get(require("../services/employee/viewEmployees").process);
+
   app
     .route("/user/login")
     .post(require("../services/user/userLogin").processRequest);
