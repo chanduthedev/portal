@@ -5,6 +5,7 @@ import PreLogin from "./components/PreLogin";
 import SignUp from "./components/SignUp";
 import NewRecipe from "./components/CreateRecipe";
 import ShowRecipes from "./components/ShowRecipes";
+import Candidates from "./components/Candidates";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import React, { useState } from "react";
 import useToken from "./components/useToken";
@@ -26,6 +27,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/newRecipe" element={<NewRecipe />}></Route>
           <Route path="/recipes" element={<ShowRecipes />}></Route>
+          <Route path="/candidates" element={<Candidates />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

@@ -28,6 +28,10 @@ export default function Dashboard() {
     e.preventDefault();
     navigate("/recipes");
   };
+  const ShowCandidates = (e) => {
+    e.preventDefault();
+    navigate("/candidates");
+  };
   return (
     <div>
       <h2>Dashboard</h2>
@@ -37,6 +41,9 @@ export default function Dashboard() {
       <br />
       <button class="button button3" type="submit" onClick={ShowRecipes}>
         Show recipes
+      </button>
+      <button class="button button3" type="submit" onClick={ShowCandidates}>
+        Show Candidates
       </button>
       <br />
       <button class="button button3" type="submit" onClick={LogOut}>
