@@ -23,7 +23,7 @@ Make sure that Mongo DB database is up and running
 
 1. Navigate to the `server` folder from the project root folder `portal`
 2. Run `npm install` to install all dependencies
-3. Run `npm run server.js` to start the server
+3. Run `node server.js` to start the server
 
 ## How to start Web App:
 
